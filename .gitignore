@@ -1,0 +1,11 @@
+# Personal notes
+LEARNINGS.md
+LEARNINGS.html
+
+# IDE
+.idea/
+
+# Gradle
+.gradle/
+build/
+bin/
