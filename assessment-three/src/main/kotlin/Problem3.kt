@@ -1,6 +1,3 @@
-import java.util.PriorityQueue
-import kotlin.comparisons.compareByDescending
-
 /*
  * Question 3: Logic & Framework Simulation (Medium-Hard)
  * Target Time: 25–30 Minutes
@@ -33,43 +30,7 @@ import kotlin.comparisons.compareByDescending
 
 fun resolveDependencies(tasks: List<String>, deps: List<List<String>>): List<String> {
     // TODO: build graph and in-degree map, run Kahn's BFS topological sort
-    // map representing task -> num of dependencies it has
-    val inDegree = mutableMapOf<String, Int>().apply {
-        tasks.forEach { task -> put(task, 0) }
-    }
-    // map representing task -> list of tasks it unblocks
-    val outboundDeps = mutableMapOf<String, MutableList<String>>().apply {
-        tasks.forEach { task -> put (task, mutableListOf()) }
-    }
-
-    deps.forEach { dep ->
-        val from = dep[0]
-        val to = dep[1]
-
-        inDegree[from] = (inDegree[from] ?: 0) + 1
-        outboundDeps[to]?.add(from)
-    }
-
-    val queue = ArrayDeque<String>()
-    // add tasks that don't have deps
-    val initialTasks = tasks.filter { task -> inDegree[task]!! == 0 }
-    queue.addAll(initialTasks)
-
-    val processed = mutableListOf<String>()
-    while (queue.isNotEmpty()) {
-        val task = queue.removeFirst()
-
-        processed.add(task)
-        outboundDeps[task]?.forEach {
-            // decrement in degree once a dep is processed
-            inDegree[it] = inDegree[it]!! - 1
-            if (inDegree[it] == 0) {
-                queue.add(it)
-            }
-        }
-    }
-
-    return if (processed.size > tasks.size) emptyList() else processed
+    TODO()
 }
 
 fun main() {
@@ -95,5 +56,5 @@ fun main() {
     println(resolveDependencies(
         listOf("A", "B", "C", "D"),
         listOf(listOf("B", "A"), listOf("C", "A"), listOf("D", "B"), listOf("D", "C"))
-    )) // Expected: A before B and C, both before D  e.g. [A, B, C, D] or [A, C, B, D]
+    )) // Expected: A before B and C, both before D
 }

@@ -1,4 +1,4 @@
- /*
+/*
  * Problem 4 — Warehouse Dependency Build Order
  * Difficulty: Hard | Estimated Time: ~30 min | Tags: Graphs, Topological Sort, BFS (Kahn's Algorithm)
  *
@@ -12,7 +12,6 @@
  * Examples:
  *   n = 4, dependencies = [[1,0],[2,0],[3,1],[3,2]]
  *   Output: [0, 1, 2, 3]
- *   (0 first; then 1 and 2 both ready — pick 1; then 2; then 3)
  *
  *   n = 3, dependencies = [[0,1],[1,2],[2,0]]  → cycle → Output: []
  *
@@ -34,43 +33,8 @@
 import java.util.PriorityQueue
 
 fun buildOrder(n: Int, dependencies: List<List<Int>>): List<Int> {
-    // TODO: Kahn's algorithm (BFS topological sort)
-    // map where key is a task id and the num of tasks it requires
-    val tasks = (0..<n).toList()
-    val inDegreeMap = mutableMapOf<Int, Int>().apply {
-        tasks.forEach { this[it] = 0 }
-    }
-    // map where key is the task id and the value is list of tasks enabled
-    val dependenciesMap = mutableMapOf<Int, MutableList<Int>>().apply {
-        repeat(n) { this[it] = mutableListOf() }
-    }
-
-    dependencies.forEach {
-        val from = it[0]
-        val to = it[1]
-
-        inDegreeMap[from] = inDegreeMap[from]!! + 1
-        dependenciesMap[to]!!.add(from)
-    }
-
-    val pq = PriorityQueue<Int>(compareBy{ it })
-    val initialTasks = tasks.filter { inDegreeMap[it] == 0 }
-    pq.addAll(initialTasks)
-
-    val orderedTasks = mutableListOf<Int>()
-    while (pq.isNotEmpty()) {
-        val task = pq.poll()
-        orderedTasks.add(task)
-
-        dependenciesMap[task]?.forEach {
-            inDegreeMap[it] = inDegreeMap[it]!! - 1
-            if (inDegreeMap[it] == 0) {
-                pq.add(it)
-            }
-        }
-    }
-
-    return if (orderedTasks.size < tasks.size) { emptyList() } else { orderedTasks }
+    // TODO: Kahn's algorithm with a min-heap for lexicographically smallest order
+    TODO()
 }
 
 fun main() {

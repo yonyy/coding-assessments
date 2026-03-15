@@ -17,13 +17,6 @@
  *   used  = {"FREESHIP"}
  *   Output: ["SAVE20AB", "ABCD1234"]
  *
- *   - "SAVE20AB" → valid, not used ✓
- *   - "HI"       → too short ✗
- *   - "ABCD1234" → valid ✓
- *   - "SAVE20AB" → duplicate of already-returned code ✗
- *   - "abc!1234" → contains '!' ✗
- *   - "FREESHIP" → in used set ✗
- *
  * Constraints:
  *   - 1 ≤ codes.size ≤ 10^4
  *   - 1 ≤ codes[i].length ≤ 20
@@ -37,16 +30,7 @@
 
 fun validCodes(codes: List<String>, used: Set<String>): List<String> {
     // TODO: filter by length == 8, alphanumeric only, not in used, not already returned
-    return codes
-        .filter { it.isValidPromoCode() && !used.contains(it) }
-        .distinct()
-}
-
-fun String.isValidPromoCode(): Boolean {
-    val length = 8
-    val alphanumericPattern = "[A-Za-z0-9]+".toRegex()
-
-    return this.length == length && alphanumericPattern.matches(this)
+    TODO()
 }
 
 fun main() {

@@ -26,59 +26,13 @@ import kotlin.math.abs
  *   - Ensure sumA ≥ sumB (swap references otherwise) so we always reduce A and grow B.
  *   - Sort A descending, B ascending.
  *   - For each of the k swaps, consider the best candidate pair (A[i], B[i]).
- *     A swap is beneficial only if it reduces the gap; stop early if it would overshoot
- *     (i.e. the new diff would be larger than current).
+ *     A swap is beneficial only if it reduces the gap; stop early if it would overshoot.
  *   - Return the minimum |sumA - sumB| seen.
  */
 
 fun minDiff(a: List<Int>, b: List<Int>, k: Int): Int {
     // TODO: greedy — sort A descending, B ascending, perform up to k beneficial swaps
-    val sortedA = a.sortedDescending()
-    val sortedB = b.sorted()
-    val sumA = sortedA.sum()
-    val sumB = sortedB.sum()
-
-    if (sumA == sumB) {
-        return 0 // no swap needed
-    }
-
-    var currSumA = sumA
-    var currSumB = sumB
-    var candidatesA = sortedA.toMutableList()
-    var candidatesB = sortedB.toMutableList()
-
-    val currDiff = abs(currSumA - currSumB)
-    repeat(k) {
-        var aToSwap = -1
-        var bToSwap = -1
-        var newDiff = currDiff
-        candidatesA.forEach { a ->
-            candidatesB.forEach { b ->
-                var newSumA = currSumA - a + b
-                var newSumB = currSumB - b + a
-                var diff = abs(newSumA - newSumB)
-
-                if (diff < newDiff) {
-                    aToSwap = a
-                    bToSwap = b
-                    newDiff = diff
-                }
-            }
-        }
-
-        if (aToSwap == -1) {
-            return@repeat
-        }
-
-        candidatesA.remove(aToSwap)
-        candidatesB.remove(bToSwap)
-        currSumA = currSumA - aToSwap + bToSwap
-        currSumB = currSumB - bToSwap + aToSwap
-    }
-
-
-
-    return abs(currSumA - currSumB)
+    TODO()
 }
 
 fun main() {

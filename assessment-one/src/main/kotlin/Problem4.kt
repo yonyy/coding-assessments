@@ -1,3 +1,28 @@
+/*
+ * Problem 4 — Shopper Network Reliability
+ * Difficulty: Hard | Estimated Time: ~30 min | Tags: Graphs, Dijkstra, Priority Queue
+ *
+ * Instacart models its shopper network as a weighted directed graph. Nodes are
+ * fulfillment zones; edges carry a travel time (Int) and a reliability (Double,
+ * 0.0–1.0 probability of being open).
+ *
+ * Given n zones (0-indexed), edges as [u, v, time, reliability], a src, a dst,
+ * and a minReliability threshold, find the minimum travel time from src to dst
+ * along any path whose path reliability (product of edge reliabilities) is
+ * >= minReliability. Return -1 if no valid path exists.
+ *
+ * Example:
+ *   n=4, edges=[[0,1,4,0.90],[0,2,2,0.80],[1,3,3,0.95],[2,3,5,0.70],[0,3,10,1.00]]
+ *   src=0, dst=3, minReliability=0.75 → Output: 7  (path 0→1→3, rel=0.855)
+ *
+ * Constraints:
+ *   - 1 ≤ n ≤ 10^4
+ *   - 0 ≤ edges.size ≤ 5×10^4
+ *   - 0.0 ≤ reliability ≤ 1.0
+ *   - All edge times are positive integers
+ *   - src ≠ dst
+ */
+
 import java.util.PriorityQueue
 
 data class Edge(val to: Int, val time: Int, val reliability: Double)
@@ -10,6 +35,7 @@ fun minTravelTime(
     dst: Int,
     minReliability: Double
 ): Int {
+    // Step 1: Build adjacency list
     val graph = Array(n) { mutableListOf<Edge>() }
     for (e in edges) {
         val u = e[0] as Int; val v = e[1] as Int
@@ -17,35 +43,10 @@ fun minTravelTime(
         graph[u].add(Edge(v, t, r))
     }
 
-    // Min-heap on time; bestReliability[node] tracks the max reliability of any
-    // settled path to that node — used to prune dominated states on pop.
-    val pq = PriorityQueue<State>(compareBy { it.time })
-    val bestReliability = DoubleArray(n) { 0.0 }
-
-    pq.offer(State(0, src, 1.0))
-
-    while (pq.isNotEmpty()) {
-        val (time, node, rel) = pq.poll()
-
-        // A later-arriving state already settled this node with higher reliability.
-        if (rel < bestReliability[node]) continue
-        bestReliability[node] = rel
-
-        if (node == dst) {
-            return if (rel >= minReliability) time else continue
-        }
-
-        for (edge in graph[node]) {
-            val newRel = rel * edge.reliability
-            // Only enqueue if this path offers better reliability than anything
-            // already settled for the neighbor (pruning dominated pushes).
-            if (newRel > bestReliability[edge.to]) {
-                pq.offer(State(time + edge.time, edge.to, newRel))
-            }
-        }
-    }
-
-    return -1
+    // Step 2: Modified Dijkstra
+    // TODO: min-heap on time; track best (time, reliability) per node
+    // Accept dst only if reliability >= minReliability
+    TODO()
 }
 
 fun main() {
@@ -56,28 +57,8 @@ fun main() {
         listOf(2, 3, 5,  0.70),
         listOf(0, 3, 10, 1.00)
     )
-    // 0→1→3: time=7, rel=0.855 ✓  |  0→2→3: time=7, rel=0.56 ✗  |  0→3: time=10, rel=1.0 ✓
-    println(minTravelTime(4, edges, 0, 3, 0.75))   // Expected: 7
-
-    // All paths fall below minReliability
-    println(minTravelTime(4, edges, 0, 3, 0.99))   // Expected: 10 (only 0→3 direct at 1.0 qualifies... wait 1.0>=0.99)
-    // Actually: 0→3 direct rel=1.0 >= 0.99, time=10. Expected: 10
-
-    // No path to dst at all
-    println(minTravelTime(4, listOf(
-        listOf(0, 1, 5, 0.9)
-    ), 0, 3, 0.5))                                  // Expected: -1
-
-    // Direct single-hop path
-    println(minTravelTime(2, listOf(
-        listOf(0, 1, 3, 0.80)
-    ), 0, 1, 0.75))                                 // Expected: 3
-
-    // Faster path fails reliability; slower path qualifies
-    println(minTravelTime(3, listOf(
-        listOf(0, 1, 1, 0.40),
-        listOf(0, 2, 2, 0.50),
-        listOf(1, 2, 1, 0.40),  // 0→1→2: time=2, rel=0.16 ✗
-        listOf(0, 2, 5, 0.90)   // 0→2 direct: time=5, rel=0.90 ✓
-    ), 0, 2, 0.80))                                 // Expected: 5
+    println(minTravelTime(4, edges, 0, 3, 0.75))  // Expected: 7
+    println(minTravelTime(4, edges, 0, 3, 0.99))  // Expected: 10
+    println(minTravelTime(4, listOf(listOf(0, 1, 5, 0.9)), 0, 3, 0.5)) // Expected: -1
+    println(minTravelTime(2, listOf(listOf(0, 1, 3, 0.80)), 0, 1, 0.75)) // Expected: 3
 }

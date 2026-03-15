@@ -28,80 +28,13 @@
 
 fun encode(route: String): String {
     // TODO: run-length encode — omit count when run length is 1
-    var currentDir = ""
-    var currCount = 0
-    var encodedString = ""
-
-    route.forEachIndexed { index, it ->
-        if (it.toString() == currentDir) {
-            currCount++
-        } else {
-            val numSuffix = if (currCount > 1) currCount.toString() else ""
-            encodedString += "$currentDir$numSuffix"
-            currentDir = it.toString()
-            currCount = 1
-        }
-
-        if (index == route.length - 1) {
-            val numSuffix = if (currCount > 1) currCount.toString() else ""
-            encodedString += "$currentDir$numSuffix"
-        }
-    }
-
-    return encodedString
+    TODO()
 }
-
-// Alternative
-//fun encode(route: String): String {
-//    val sb = StringBuilder()
-//    var i = 0
-//    while (i < route.length) {
-//        val ch = route[i]
-//        var count = 1
-//        // count how many consecutive identical chars follow
-//        while (i + count < route.length && route[i + count] == ch) count++
-//        sb.append(ch)
-//        if (count > 1) sb.append(count)   // omit count when run = 1
-//        i += count                         // jump past the entire run
-//    }
-//    return sb.toString()
-//}
 
 fun decode(encoded: String): String {
     // TODO: parse char optionally followed by digits, expand
-    var decodedString = ""
-    var currentDir = ""
-    encoded.forEachIndexed { index, ch ->
-        if (ch.isDigit()) {
-            decodedString += currentDir.repeat(ch.digitToInt() - 1)
-            currentDir = ""
-        } else {
-            currentDir = ch.toString()
-            decodedString += currentDir
-        }
-
-
-    }
-
-    return decodedString
+    TODO()
 }
-
-// Alternative
-// fun decode(encoded: String): String {
-//    val sb = StringBuilder()
-//    var i = 0
-//    while (i < encoded.length) {
-//        val ch = encoded[i]
-//        // scan forward to collect all digit characters after this letter
-//        var j = i + 1
-//        while (j < encoded.length && encoded[j].isDigit()) j++
-//        // substring(i+1, j) is the full number — empty means count of 1
-//        val count = if (j > i + 1) encoded.substring(i + 1, j).toInt() else 1
-//        sb.append(ch.toString().repeat(count))
-//        i = j   // advance past the letter AND its digits
-//    }
-//    return sb.toString()
-// }
 
 fun main() {
     println(encode("NNNEESSWWWWN"))  // Expected: N3E2S2W4N

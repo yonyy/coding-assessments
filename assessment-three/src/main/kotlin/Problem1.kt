@@ -24,33 +24,18 @@ fun palindromicPrefix(s: String): String {
     // TODO: iterate from the full string down to length 2,
     // return s.substring(prefix.length) for the first palindromic prefix found.
     // If none found (length > 1), return the original string.
-    for (i in s.length downTo 2) {
-        val prefix = s.substring(0, i)
-        if (prefix.isPalindrome()) {
-            //println("prefix $prefix is a Palindrome")
-            return s.substring(prefix.length)
-        }
-        //println("prefix $prefix is not a Palindrome")
-    }
-
-    return s
+    TODO()
 }
 
 fun String.isPalindrome(): Boolean {
     // TODO: helper — compare characters from both ends toward the center
-    for (i in 0..this.length / 2) {
-        if (this[i] != this[this.length - i - 1]) {
-            return false
-        }
-    }
-
-    return true
+    TODO()
 }
 
 fun main() {
     println(palindromicPrefix("aaaba"))   // Expected: "ba"
     println(palindromicPrefix("racecar")) // Expected: ""
-    println(palindromicPrefix("abcde"))   // Expected: "abcde" (no prefix > 1 char is a palindrome)
-    println(palindromicPrefix("aabaa"))   // Expected: "" (whole string is a palindrome)
-    println(palindromicPrefix("aab"))     // Expected: "b" (prefix "aa" is a palindrome)
+    println(palindromicPrefix("abcde"))   // Expected: "abcde"
+    println(palindromicPrefix("aabaa"))   // Expected: ""
+    println(palindromicPrefix("aab"))     // Expected: "b"
 }

@@ -24,21 +24,17 @@ class TextEditor {
 
     fun insert(text: String) {
         // TODO: push current document onto history, then append text
-        history.add(document)
-        document = "$document$text"
+        TODO()
     }
 
     fun delete(k: Int) {
         // TODO: push current document onto history, then drop last k chars
-        history.add(document)
-        document.substring(0, maxOf(0, document.length - k))
+        TODO()
     }
 
     fun undo() {
         // TODO: pop from history and restore document (no-op if history is empty)
-        if (history.isNotEmpty()) {
-            document = history.removeLast()
-        }
+        TODO()
     }
 
     fun getText(): String = document

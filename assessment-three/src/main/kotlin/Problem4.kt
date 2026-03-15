@@ -38,13 +38,13 @@ import kotlin.math.max
 
 fun visiblePoints(points: List<List<Int>>, angle: Int): Int {
     // TODO: implement sliding window on sorted angles with wrap-around duplication
-    return 0
+    TODO()
 }
 
 fun main() {
     println(visiblePoints(listOf(listOf(2,1), listOf(2,2), listOf(3,3)), 90))  // Expected: 3
     println(visiblePoints(listOf(listOf(2,1), listOf(2,2), listOf(3,3)), 45))  // Expected: 2
     println(visiblePoints(listOf(listOf(1,0), listOf(0,1)), 180))              // Expected: 2
-    println(visiblePoints(listOf(listOf(0,0), listOf(1,1)), 90))               // Expected: 2  (origin always visible)
-    println(visiblePoints(listOf(listOf(1,0)), 0))                             // Expected: 1  (point is exactly on boundary)
+    println(visiblePoints(listOf(listOf(0,0), listOf(1,1)), 90))               // Expected: 2
+    println(visiblePoints(listOf(listOf(1,0)), 0))                             // Expected: 1
 }

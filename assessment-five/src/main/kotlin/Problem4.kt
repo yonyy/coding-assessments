@@ -19,16 +19,12 @@
  *
  * Examples:
  *   Example 1:
- *     n = 6
- *     corridors = [[0,1],[1,2],[3,4]]
- *     queries   = [[0,2],[0,3],[3,4],[5,5]]
+ *     n = 6, corridors = [[0,1],[1,2],[3,4]], queries = [[0,2],[0,3],[3,4],[5,5]]
  *     Output: Pair([true, false, true, true], 3)
- *     Explanation: Regions {0,1,2}, {3,4}, {5} → 3 distinct regions
  *
  *   Example 2:
  *     n = 4, corridors = [], queries = [[0,1],[2,3]]
  *     Output: Pair([false, false], 4)
- *     Explanation: No corridors — every zone is its own region.
  *
  * Constraints:
  *   - 1 ≤ n ≤ 10^5
@@ -42,37 +38,20 @@ class DSU(n: Int) {
     val rank = IntArray(n) { 0 }
 
     fun find(x: Int): Int {
-        if (parent[x] != x) {
-            parent[x] = find(parent[x])
-        }
-
-        return parent[x]
+        // TODO: path compression
+        TODO()
     }
 
     fun union(a: Int, b: Int) {
         // TODO: union by rank
-        val ra = find(a)
-        val rb = find(b)
-        if (ra == rb) {
-            return
-        }
-
-        if (rank[ra] < rank[rb]) {
-            parent[ra] = rb
-        } else {
-            parent[rb] = ra
-            if (rank[ra] == rank[rb]) {
-                rank[ra]++
-            }
-        }
-
+        TODO()
     }
 
     fun connected(a: Int, b: Int) = find(a) == find(b)
 
     fun regionCount(): Int {
         // TODO: count nodes where parent[i] == i (roots)
-        return parent.indices.count { parent[it] == it }
+        TODO()
     }
 }
 
@@ -81,10 +60,8 @@ fun surgePricingZones(
     corridors: List<List<Int>>,
     queries: List<List<Int>>
 ): Pair<List<Boolean>, Int> {
-    val dsu = DSU(n)
-    corridors.forEach { dsu.union(it[0], it[1]) }
-    val answers = queries.map { dsu.connected(it[0], it[1]) }
-    return Pair(answers, dsu.regionCount())
+    // TODO: build DSU, union corridors, answer queries
+    TODO()
 }
 
 fun main() {

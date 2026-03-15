@@ -27,25 +27,7 @@
 
 fun maxFreshness(scores: IntArray, w: Int): List<Int> {
     // TODO: monotonic decreasing deque — stores indices
-    val deque = ArrayDeque<Int>()
-    val results = mutableListOf<Int>()
-    scores.forEachIndexed { index, score ->
-        if (deque.isNotEmpty() && index - deque.first() > w - 1) {
-            deque.removeFirst()
-        }
-
-        while (deque.isNotEmpty() && scores[deque.last()] <= score) {
-            deque.removeLast()
-        }
-
-        deque.addLast(index)
-
-        if (index >= w - 1) {
-            results.add(scores[deque.first()])
-        }
-    }
-
-    return results
+    TODO()
 }
 
 fun main() {

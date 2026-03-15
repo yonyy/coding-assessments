@@ -1,5 +1,3 @@
-import java.util.PriorityQueue
-
 /*
  * Problem 1 — Cart Item Frequency
  * Difficulty: Easy | Estimated Time: ~15 min | Tags: Hash Map, Sorting
@@ -28,34 +26,8 @@ import java.util.PriorityQueue
 
 fun sortByFrequency(cart: List<String>): List<String> {
     // TODO: count frequencies, sort by count desc then name asc
-    val pq = PriorityQueue(compareByDescending<Pair<Int, String>>{ it.first }
-        .thenBy { it.second })
-    mutableMapOf<String, Int>().apply {
-        cart.forEach {
-            put(it, getOrDefault(it, 0) + 1)
-        }
-    }
-        .forEach { (string, i) ->
-            pq.add(Pair(i, string))
-        }
-
-    val results = mutableListOf<String>()
-    while (pq.isNotEmpty()) {
-        results.add(pq.poll().second)
-    }
-
-    return results
+    TODO()
 }
-
-// Alternative without PQ
-//fun sortByFrequency(cart: List<String>): List<String> {
-//    return cart.groupingBy { it }
-//        .eachCount()
-//        .entries
-//        .sortedWith(compareByDescending<Map.Entry<String, Int>> { it.value }
-//            .thenBy { it.key })
-//        .map { it.key }
-//}
 
 fun main() {
     println(sortByFrequency(listOf("apple", "banana", "apple", "orange", "banana", "apple")))
