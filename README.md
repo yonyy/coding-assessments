@@ -12,7 +12,6 @@ Mock coding assessments in Kotlin, styled after industry assessments (CodeSignal
 ├── assessment-four/      # 4 problems
 ├── assessment-five/      # 4 problems
 ├── LEARNINGS.md          # Algorithm patterns and Kotlin idioms learned across all assessments
-└── LEARNINGS.html        # Rendered version of LEARNINGS.md
 ```
 
 ## Assessments
