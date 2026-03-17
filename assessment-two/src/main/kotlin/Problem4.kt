@@ -15,7 +15,7 @@
  *   - Advance to next uncovered store, repeat. Count zones used.
  *
  * Examples:
- *   stores=[1,5,9,15], k=2, roadLength=20 → Output: 5.0
+ *   stores=[1,5,9,15], k=2, roadLength=20 → Output: 3.0
  *   stores=[1,2,3],    k=1, roadLength=10 → Output: 1.0
  *   stores=[0,10],     k=2, roadLength=10 → Output: 0.0
  *
