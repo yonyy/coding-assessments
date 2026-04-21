@@ -30,7 +30,21 @@
 
 fun validCodes(codes: List<String>, used: Set<String>): List<String> {
     // TODO: filter by length == 8, alphanumeric only, not in used, not already returned
-    TODO()
+    val seen = used.toMutableSet()
+    return codes.filter {
+        val valid = it.isValidCode() && !seen.contains(it)
+        if (valid) {
+            seen.add(it)
+        }
+
+        return@filter valid
+    }
+}
+
+fun String.isValidCode(): Boolean {
+    val regex = "[a-zA-Z0-9]+".toRegex()
+
+    return this.matches(regex) && this.length == 8
 }
 
 fun main() {

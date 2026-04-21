@@ -25,8 +25,18 @@
  */
 
 fun sortByFrequency(cart: List<String>): List<String> {
-    // TODO: count frequencies, sort by count desc then name asc
-    TODO()
+    return cart.groupingBy { it }
+        .eachCount()
+        .entries
+        .sortedWith(
+            compareByDescending<Map.Entry<String, Int>> {
+                it.value
+            }.thenBy {
+                it.key
+            }
+        )
+        .map { it.key }
+
 }
 
 fun main() {

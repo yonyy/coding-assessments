@@ -22,14 +22,26 @@
 fun maxDeliveries(deliveries: List<IntArray>): Int {
     // TODO: classic interval scheduling —
     // sort by end time, greedily pick the earliest-ending non-overlapping delivery
-    TODO()
+    val sorted = deliveries.sortedBy { it[1] }
+    var count = 1
+    var index = 1
+    var prevEndTime = sorted[0][1]
+    while (index < sorted.size) {
+        if (sorted[index][0] >= prevEndTime) {
+            prevEndTime = sorted[index][1]
+            count++
+        }
+        index++
+    }
+
+    return count
 }
 
 fun main() {
     println(maxDeliveries(listOf(
         intArrayOf(1, 3), intArrayOf(2, 4), intArrayOf(3, 5),
         intArrayOf(6, 8), intArrayOf(7, 9), intArrayOf(8, 10)
-    ))) // Expected: 3
+    ))) // Expected: 4
 
     println(maxDeliveries(listOf(
         intArrayOf(1, 10), intArrayOf(2, 3), intArrayOf(4, 5)

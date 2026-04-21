@@ -25,7 +25,11 @@ data class Item(val name: String, val stock: Int, val threshold: Int)
 fun restockPriority(items: List<Item>): List<String> {
     // TODO: filter items where stock < threshold,
     // then sort by (stock - threshold) asc, break ties alphabetically
-    TODO()
+    return items.filter { it.stock < it.threshold }
+        .sortedWith(
+            compareBy<Item> { it.stock - it.threshold }.thenBy { it.name }
+        )
+        .map { it.name }
 }
 
 fun main() {
