@@ -1,0 +1,217 @@
+/* ── Reset & base ────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --color-primary:   #0061FF;
+  --color-surface:   #FFFFFF;
+  --color-bg:        #F7F7F7;
+  --color-border:    #E0E0E0;
+  --color-text:      #1E1919;
+  --color-muted:     #637282;
+  --color-success:   #1A7F37;
+  --color-warning:   #9A6700;
+  --color-danger:    #CF222E;
+  --color-success-bg: #DAFBE1;
+  --color-warning-bg: #FFF8C5;
+  --color-danger-bg:  #FFEBE9;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, .08);
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+}
+
+/* ── Topbar ──────────────────────────────────────────────────────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  height: 56px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+.topbar__logo   { font-size: 1.25rem; font-weight: 700; color: var(--color-primary); }
+.topbar__subtitle { color: var(--color-muted); font-size: .875rem; }
+
+/* ── Layout ──────────────────────────────────────────────────────── */
+.container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* ── Card ────────────────────────────────────────────────────────── */
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Form ────────────────────────────────────────────────────────── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.field label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.optional {
+  font-weight: 400;
+  color: var(--color-muted);
+}
+.field input[type="text"],
+.field input[type="number"],
+.field select {
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  background: var(--color-surface);
+  outline: none;
+}
+.field input:focus,
+.field select:focus {
+  border-color: var(--color-primary);
+}
+.form-error {
+  color: var(--color-danger);
+  font-size: 0.8125rem;
+  margin-bottom: 12px;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────── */
+.btn-primary {
+  padding: 9px 20px;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.btn-primary:hover { filter: brightness(1.1); }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-secondary {
+  padding: 6px 14px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+.btn-danger {
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid var(--color-danger);
+  color: var(--color-danger);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+.btn-danger:hover { background: var(--color-danger-bg); }
+
+/* ── Link list ───────────────────────────────────────────────────── */
+.link-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.link-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+}
+.link-card__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.link-card__filename {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  flex: 1;
+}
+.link-card__label {
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+}
+.link-card__url-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.link-card__url {
+  flex: 1;
+  font-size: 0.8125rem;
+  font-family: monospace;
+  color: var(--color-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.link-card__meta {
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.link-card__actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+/* ── Status badges ───────────────────────────────────────────────── */
+.badge {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: 3px 8px;
+  border-radius: 99px;
+}
+.badge--active  { background: var(--color-success-bg); color: var(--color-success); }
+.badge--expired { background: var(--color-warning-bg); color: var(--color-warning); }
+.badge--revoked { background: var(--color-danger-bg);  color: var(--color-danger); }
+
+/* ── Empty & loading states ──────────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 48px 16px;
+  color: var(--color-muted);
+  font-size: 0.9375rem;
+}
+.loading-state { display: flex; flex-direction: column; gap: 8px; }
+.skeleton-row {
+  height: 88px;
+  background: linear-gradient(90deg, #ececec 25%, #f5f5f5 50%, #ececec 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+  border-radius: var(--radius-md);
+}
+@keyframes shimmer { to { background-position: -200% 0; } }

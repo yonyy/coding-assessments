@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dropbox — File Browser</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <span class="topbar__logo">Dropbox</span>
+    <span class="topbar__subtitle">File Browser</span>
+  </header>
+
+  <main class="container">
+
+    <!-- Controls bar -->
+    <div class="controls">
+      <!-- TODO: wire to fetchFiles() with a 300 ms debounce -->
+      <input
+        type="search"
+        id="search-input"
+        class="controls__search"
+        placeholder="Search files…"
+        aria-label="Search files"
+      />
+
+      <!-- TODO: populate <option> elements from unique extensions in the data -->
+      <select id="type-filter" class="controls__select" aria-label="Filter by type">
+        <option value="">All types</option>
+      </select>
+
+      <!-- TODO: clicking the active button toggles asc/desc -->
+      <div class="controls__sort" role="group" aria-label="Sort options">
+        <button class="sort-btn active" data-sort="name">Name</button>
+        <button class="sort-btn" data-sort="size">Size</button>
+        <button class="sort-btn" data-sort="modifiedAt">Modified</button>
+      </div>
+    </div>
+
+    <!-- Status line: "Showing 12 of 20 files" -->
+    <p id="status-line" class="status-line" aria-live="polite"></p>
+
+    <!-- Loading skeleton (shown while fetch is in-flight) -->
+    <div id="loading-state" class="loading-state" hidden>
+      <div class="skeleton-row"></div>
+      <div class="skeleton-row"></div>
+      <div class="skeleton-row"></div>
+      <div class="skeleton-row"></div>
+      <div class="skeleton-row"></div>
+    </div>
+
+    <!-- Empty state (shown when results are empty) -->
+    <div id="empty-state" class="empty-state" hidden>
+      <p>No files found.</p>
+      <button id="clear-filters-btn" class="btn-secondary">Clear filters</button>
+    </div>
+
+    <!-- File list
+         TODO: render a <li class="file-row"> for each FileRecord:
+           - extension badge (.file-row__ext)
+           - file name (.file-row__name)
+           - right-aligned meta: owner, size, modified date (.file-row__meta) -->
+    <ul id="file-list" class="file-list" aria-label="File list"></ul>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

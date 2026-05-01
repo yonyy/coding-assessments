@@ -1,0 +1,26 @@
+{
+  "name": "dropbox-mock-one",
+  "version": "1.0.0",
+  "description": "Dropbox full-stack mock — File Browser with Search & Filter",
+  "scripts": {
+    "dev": "concurrently --names server,client --prefix-colors blue,green \"npm run server\" \"npm run client\"",
+    "server": "ts-node-dev --respawn --transpile-only backend/server.ts",
+    "client": "npx serve frontend -p 5173",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.5",
+    "@types/uuid": "^9.0.7",
+    "concurrently": "^8.2.2",
+    "serve": "^14.2.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.3"
+  }
+}

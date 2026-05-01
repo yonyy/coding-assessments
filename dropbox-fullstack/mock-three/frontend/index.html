@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dropbox — Upload Files</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <span class="topbar__logo">Dropbox</span>
+    <span class="topbar__subtitle">Upload Files</span>
+  </header>
+
+  <main class="container">
+
+    <!-- Drop zone -->
+    <!-- TODO: wire dragover, dragleave, drop events in app.js -->
+    <div id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-label="Drop files here or click to browse">
+      <div class="drop-zone__icon">&#8679;</div>
+      <p class="drop-zone__text">Drop files here or <span class="drop-zone__link">click to browse</span></p>
+      <p class="drop-zone__hint">Maximum 10 MB per file</p>
+      <!-- Hidden file input — triggered by clicking the drop zone -->
+      <input type="file" id="file-input" multiple hidden />
+    </div>
+
+    <!-- Upload queue
+         TODO: render a .queue-item for each UploadQueueItem:
+           - File name and formatted size
+           - Progress bar (.progress-bar__fill, width: {progress}%)
+           - Status label (Queued / Uploading / Complete / Failed)
+           - "×" remove button (only for queued items)
+           Items stay in the list after completing for review. -->
+    <div id="upload-queue" class="upload-queue" hidden>
+      <h2 class="section-title">Upload queue</h2>
+      <ul id="queue-list" class="queue-list"></ul>
+    </div>
+
+    <!-- Uploaded files list (fetched from GET /api/uploads after all complete) -->
+    <div id="uploads-section" class="uploads-section" hidden>
+      <h2 class="section-title">Uploaded files</h2>
+
+      <div id="uploads-loading" class="loading-state" hidden>
+        <div class="skeleton-row"></div>
+        <div class="skeleton-row"></div>
+      </div>
+
+      <!-- TODO: render .upload-row for each UploadRecord:
+             - File name, MIME type badge, size, upload time
+             - Delete button → DELETE /api/uploads/:uploadId then re-fetch -->
+      <ul id="uploads-list" class="uploads-list"></ul>
+    </div>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

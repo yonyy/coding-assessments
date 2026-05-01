@@ -1,8 +1,5 @@
 package dropbox
 
-import dropbox.Directory.Companion.ROOT_DIR
-
-
 //Implement an in-memory virtual file system supporting directories and files. Your system must support:
 //
 //mkdir(path) — create a directory at the given absolute path. Creates parent directories as needed (like mkdir -p). Throws if a file exists at that path.
@@ -16,176 +13,119 @@ import dropbox.Directory.Companion.ROOT_DIR
 //All paths are absolute (start with /). The root / always exists.
 
 open class File(
-    val name: String
+    val name: String,
 ) {
     open fun canBeDeleted(): Boolean = true
 }
 
 class Directory(
     name: String,
-    val parent: Directory? = null,
 ): File(name) {
-    val children = mutableListOf<File>()
+    private val fileNames = mutableSetOf<String>()
 
-    override fun canBeDeleted(): Boolean = children.isEmpty()
-
-    fun getFullPath(): String {
-        if (parent != null) {
-            if (parent.isRootDir()) {
-                return "${parent.getFullPath()}$name"
-            }
-            return "${parent.getFullPath()}/$name"
-        }
-
-        return name
+    override fun canBeDeleted(): Boolean {
+        return fileNames.isEmpty()
     }
 
-    fun hasDirectory(name: String): Boolean =
-        children.filterIsInstance<Directory>()
-            .any { it.name == name }
-
-    fun hasFile(name: String): Boolean =
-        children.any { it.name == name }
-
-    fun getDirectory(name: String): Directory =
-        children.filterIsInstance<Directory>()
-            .single { it.name == name }
-
-    fun createDirectory(name: String) {
-        if (hasDirectory(name)) {
-            return
-        }
-
-        if (hasFile(name)) {
-            throw IllegalArgumentException("Directory name already used in existing file")
-        }
-
-        val dir = Directory(name, this)
-        children.add(dir)
+    fun addFile(name: String) {
+        fileNames.add(name)
     }
 
-    fun createFile(name: String) {
-        if (hasDirectory(name)) {
-            throw IllegalArgumentException("File name already used in existing directory")
-        }
-
-        if (hasFile(name)) {
-            return
-        }
-
-        val file = File(name)
-        children.add(file)
-    }
-
-    fun logFiles() {
-        children
-            .sortedBy { it.name }
-            .forEach {
-                println(it.name)
-            }
-    }
-
-    fun isRootDir(): Boolean = this.name == ROOT_DIR.name
-
-    companion object {
-        val ROOT_DIR = Directory("/")
+    fun removeFile(name: String) {
+        fileNames.remove(name)
     }
 }
 
 class FileSystem {
-    val rootDir: Directory = ROOT_DIR
-    var currentDirectory: Directory = ROOT_DIR
-    val fileMap = mutableMapOf<String, File>().apply {
-        put("/", ROOT_DIR)
-    }
-
-    fun mkdir(path: String) {
-        if (path.isEmpty()) {
-            throw IllegalArgumentException("path can't be empty")
-        }
-        if (path[0] != '/') {
-            throw IllegalArgumentException("Absolute path expected: $path")
-        }
-
-        if (path == "/") {
-            return
-        }
-
-        val pathList = path.split('/')
-        var currDir: Directory? = null
-        for (child in pathList) {
-            if (currDir == null) {
-                currDir = ROOT_DIR
-                continue
-            }
-
-            currDir.createDirectory(child)
-            currDir = currDir.getDirectory(child)
-            fileMap.putIfAbsent(currDir.getFullPath(), currDir)
-        }
-    }
-
-    fun ls(path: String) {
-        if (path != "/" && (fileMap[path] == null || fileMap[path] !is Directory)) {
-            throw IllegalArgumentException("Directory '$path' could not be found")
-        }
-
-        (fileMap[path] as Directory).logFiles()
+    val root = Directory("/")
+    val files = mutableMapOf<String, File>().apply {
+        put(root.name, root)
     }
 
     fun touch(path: String) {
-        if (path.isEmpty()) {
-            throw IllegalArgumentException("path can't be empty")
-        }
-        if (path[0] != '/') {
-            throw IllegalArgumentException("Absolute path expected: $path")
+        validateAbsolutePath(path)
+        if (files.containsKey(path)) {
+            throw IllegalArgumentException("Path $path already exists.")
         }
 
-        if (path == "/") {
+        val parentDirPath = path.substringBeforeLast('/').takeIf { it.isNotEmpty() } ?: "/"
+        if (!files.containsKey(parentDirPath)) {
+            throw IllegalArgumentException("Directory $parentDirPath does not exist.")
+        }
+
+        (files[parentDirPath] as Directory).addFile(path)
+        files[path] = File(path)
+    }
+
+    fun mkdir(path: String) {
+        validateAbsolutePath(path)
+
+        if (files.containsKey(path)) {
             return
         }
 
-        val pathList = path.split('/')
-        val targetFile = pathList.last()
-        var currDir: Directory? = null
-        for (child in pathList) {
-            if (currDir == null) {
-                currDir = ROOT_DIR
-                continue
+        val segments = path.split('/').drop(1)  // drop leading empty string due to starting '/'
+        val currPath = StringBuilder()
+        segments.forEach { segment ->
+            if (segment.isEmpty()) {
+                return@forEach
+            }
+            currPath.append("/$segment")
+            if (files.containsKey(currPath.toString()) && files[currPath.toString()] !is Directory) {
+                throw IllegalArgumentException("Path $currPath already exists as non-directory.")
             }
 
-            if (child == targetFile) {
-                currDir.createFile(child)
-                return
-            }
-
-            if (!currDir.hasDirectory(child)) {
-                throw IllegalArgumentException("Directory '$child' could not be found")
-            }
-
-            currDir = currDir.getDirectory(child)
+            files.putIfAbsent(currPath.toString(), Directory(currPath.toString()))
         }
     }
 
-    fun rm(path: String) {
-        if (path.isEmpty()) {
-            throw IllegalArgumentException("path can't be empty")
-        }
-        if (path[0] != '/') {
-            throw IllegalArgumentException("Absolute path expected: $path")
+    fun ls(path: String): Set<String> {
+        validateAbsolutePath(path)
+
+        if (!files.containsKey(path)) {
+            throw IllegalArgumentException("Directory $path does not exist")
         }
 
+        val delimiter = if (path == "/") "/" else "$path/"
+        return files.keys
+            .filter { it.substringAfter(delimiter)
+                .let { substring ->
+                    substring.isNotEmpty() && !substring.contains("/")
+                }
+            }
+            .map { it.substringAfter(delimiter) }
+            .sorted()
+            .toSet()
+    }
+
+    fun rm(path: String) {
+        validateAbsolutePath(path)
+
+        if (!files.containsKey(path)) {
+            throw IllegalArgumentException("Path $path does not exist.")
+        }
+
+        if (!files[path]!!.canBeDeleted()) {
+            throw IllegalArgumentException("Directory $path is not empty. Can't delete")
+        }
+
+        val parentDirPath = path.substringBeforeLast('/').takeIf { it.isNotEmpty() } ?: "/"
+        (files[parentDirPath]!! as Directory).removeFile(path)
+        files.remove(path)
+
+    }
+
+    fun validateAbsolutePath(path: String) {
         if (path == "/") {
             return
         }
 
-        if (fileMap[path] == null) {
-            throw IllegalArgumentException("File '$path' could not be found")
+        if (path.isEmpty()) {
+            throw IllegalArgumentException("path can not be empty")
         }
 
-        val file = fileMap[path]!!
-        if (file.canBeDeleted()) {
-            fileMap.remove(path)
+        if (!path.startsWith("/")) {
+            throw IllegalArgumentException("Absolute path expected")
         }
     }
 }
@@ -200,8 +140,20 @@ fun main() {
 //    fs.ls("/yonatanp")
 
     fs.touch("/yonatanp/sample.txt")
+    fs.touch("/yonatanp/Documents/paper.txt")
+    fs.touch("/yonatanp/Pictures/blog.txt")
     fs.touch("/notes.txt")
 
     //fs.ls("/")
-    fs.ls("/yonatanp")
+    println("ls /yonatanp:")
+    fs.ls("/yonatanp").forEach { println(it) }
+
+    println("ls /:")
+    fs.ls("/").forEach { println(it) }
+
+    println("rm /yonatanp/sample.txt:")
+    fs.rm("/yonatanp/sample.txt")
+
+    println("ls /yonatanp:")
+    fs.ls("/yonatanp").forEach { println(it) }
 }
