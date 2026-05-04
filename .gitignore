@@ -3,7 +3,7 @@ LEARNINGS.html
 
 # IDE
 .idea/
-
+.claude
 .DS_Store
 
 # Gradle
