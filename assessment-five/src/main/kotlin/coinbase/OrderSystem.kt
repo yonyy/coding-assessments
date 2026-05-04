@@ -77,87 +77,11 @@ class OrderSystem {
     )
     val trades = TreeMap<Long, Trade>()
 
-    fun placeOrder(timestamp: Long, orderId: String, type: OrderType, price: Int, quantity: Int): Boolean {
-        return if (!orders.containsKey(orderId)) {
-            val order = Order(
-                id = orderId,
-                type = type,
-                price = price,
-                quantity = quantity,
-                status = OrderStatus.OPEN,
-                placedAt = timestamp
-            )
-            orders[orderId] = TreeMap<Long, Order>().apply {
-                put(timestamp, order)
-            }
+    fun placeOrder(timestamp: Long, orderId: String, type: OrderType, price: Int, quantity: Int): Boolean { TODO("Not yet implemented") }
 
-            if (type == OrderType.BUY) {
-                availableBuys.offer(order)
-            } else if (type == OrderType.SELL) {
-                availableSells.offer(order)
-            }
+    fun cancelOrder(timestamp: Long, orderId: String): Boolean { TODO("Not yet implemented") }
 
-            true
-        } else {
-            false
-        }
-    }
+    fun getOrder(timestamp: Long, orderId: String): Order? { TODO("Not yet implemented") }
 
-    fun cancelOrder(timestamp: Long, orderId: String): Boolean {
-        val orderHistory = orders[orderId] ?: return false
-
-        orderHistory[timestamp] = orderHistory.lastEntry().value.copy(
-            status = OrderStatus.CANCELLED,
-        )
-
-        return true
-    }
-
-    fun getOrder(timestamp: Long, orderId: String): Order? {
-        val orderHistory = orders[orderId] ?: return null
-
-        return orderHistory.lastEntry().value
-    }
-
-    fun matchOrders(timestamp: Long): List<Trade> {
-        fun nextOpen(orders: PriorityQueue<Order>): Order? {
-            while (orders.isNotEmpty() && orders.peek().status == OrderStatus.CANCELLED) {
-                orders.poll()
-            }
-
-            return if (orders.isNotEmpty()) {
-                orders.poll()
-            } else {
-                null
-            }
-        }
-
-        while (availableBuys.isNotEmpty() && availableSells.isNotEmpty()) {
-            val availableBuy = nextOpen(availableBuys) ?: break
-            val availableSell = nextOpen(availableSells) ?: break
-
-            if (availableBuy.price >= availableSell.price) {
-                val trade = Trade(
-                    sellOrderId = availableSell.id,
-                    buyOrderId = availableBuy.id,
-                    price = maxOf(availableBuy.price, availableSell.price),
-                    quantity = minOf(availableBuy.quantity, availableSell.quantity),
-                )
-                trades[timestamp] = trade
-
-                val remainingBuyLeft = availableBuy.quantity - trade.quantity
-                val newStatus = when (remainingBuyLeft) {
-                    0 -> OrderStatus.FILLED
-                    else -> OrderStatus.CANCELLED
-                }
-
-                orders[availableBuy.id]!![timestamp] = orders[availableBuy.id]!!.lastEntry().value.copy(
-                    status = newStatus,
-                    quantity = remainingBuyLeft
-                )
-            }
-        }
-
-        return emptyList()
-    }
+    fun matchOrders(timestamp: Long): List<Trade> { TODO("Not yet implemented") }
 }

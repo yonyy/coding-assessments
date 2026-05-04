@@ -6,24 +6,10 @@ package loancrate
 //  Output: list becomes [4, 3, 2, 1, 5], return 2  (4 and 3 were duplicates)
 
 fun removeDuplicates(nums: MutableList<Int>): Int {
-    val seen = mutableSetOf<Int>()
-    val dupes = mutableSetOf<Int>()
-    val iterator = nums.iterator()
-
-
-    while (iterator.hasNext()) {
-        val next = iterator.next()
-        if (!seen.contains(next)) {
-            seen.add(next)
-        } else {
-            iterator.remove()
-            dupes.add(next)
-        }
-    }
-
-    return dupes.size
+    TODO("Not yet implemented")
 }
 
 fun main() {
-    println(removeDuplicates(mutableListOf(4, 3, 2, 4, 1, 3, 5)))
+    // println(removeDuplicates(mutableListOf(4, 3, 2, 4, 1, 3, 5)))
+    // Expected: 2  (list becomes [4, 3, 2, 1, 5])
 }

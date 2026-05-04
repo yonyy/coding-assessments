@@ -32,7 +32,7 @@ import kotlin.math.abs
 
 fun minDiff(a: List<Int>, b: List<Int>, k: Int): Int {
     // TODO: greedy — sort A descending, B ascending, perform up to k beneficial swaps
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun main() {

@@ -10,24 +10,15 @@ package loancrate
 data class Transaction(val userId: String, val amount: Int)
 
 fun topKSpenders(transactions: List<Transaction>, k: Int): List<String> {
-    return transactions.groupBy { it.userId }   // Map<String, List<Transaction>>
-        .mapValues { it ->
-            it.value.sumOf { it.amount }
-        }   // Map<String, Int>
-        .entries
-        .sortedWith(
-            compareByDescending<Map.Entry<String, Int>> { it.value }.thenBy { it.key }
-        )
-        .take(k)
-        .map { it.key }
+    TODO("Not yet implemented")
 }
 
 fun main() {
-    println(topKSpenders(k = 2, transactions = listOf(
-        Transaction("alice", 50),
-        Transaction("bob", 30),
-        Transaction("alice", 70),
-        Transaction("carol", 150),
-        Transaction("bob", 20)
-    )))
+    // println(topKSpenders(k = 2, transactions = listOf(
+    //     Transaction("alice", 50),
+    //     Transaction("bob", 30),
+    //     Transaction("alice", 70),
+    //     Transaction("carol", 150),
+    //     Transaction("bob", 20)
+    // )))  // Expected: [carol, alice]
 }

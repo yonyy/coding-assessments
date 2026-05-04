@@ -15,7 +15,7 @@ package dropbox
 open class File(
     val name: String,
 ) {
-    open fun canBeDeleted(): Boolean = true
+    open fun canBeDeleted(): Boolean { TODO("Not yet implemented") }
 }
 
 class Directory(
@@ -23,17 +23,11 @@ class Directory(
 ): File(name) {
     private val fileNames = mutableSetOf<String>()
 
-    override fun canBeDeleted(): Boolean {
-        return fileNames.isEmpty()
-    }
+    override fun canBeDeleted(): Boolean { TODO("Not yet implemented") }
 
-    fun addFile(name: String) {
-        fileNames.add(name)
-    }
+    fun addFile(name: String) { TODO("Not yet implemented") }
 
-    fun removeFile(name: String) {
-        fileNames.remove(name)
-    }
+    fun removeFile(name: String) { TODO("Not yet implemented") }
 }
 
 class FileSystem {
@@ -42,118 +36,38 @@ class FileSystem {
         put(root.name, root)
     }
 
-    fun touch(path: String) {
-        validateAbsolutePath(path)
-        if (files.containsKey(path)) {
-            throw IllegalArgumentException("Path $path already exists.")
-        }
+    fun touch(path: String) { TODO("Not yet implemented") }
 
-        val parentDirPath = path.substringBeforeLast('/').takeIf { it.isNotEmpty() } ?: "/"
-        if (!files.containsKey(parentDirPath)) {
-            throw IllegalArgumentException("Directory $parentDirPath does not exist.")
-        }
+    fun mkdir(path: String) { TODO("Not yet implemented") }
 
-        (files[parentDirPath] as Directory).addFile(path)
-        files[path] = File(path)
-    }
+    fun ls(path: String): Set<String> { TODO("Not yet implemented") }
 
-    fun mkdir(path: String) {
-        validateAbsolutePath(path)
+    fun rm(path: String) { TODO("Not yet implemented") }
 
-        if (files.containsKey(path)) {
-            return
-        }
-
-        val segments = path.split('/').drop(1)  // drop leading empty string due to starting '/'
-        val currPath = StringBuilder()
-        segments.forEach { segment ->
-            if (segment.isEmpty()) {
-                return@forEach
-            }
-            currPath.append("/$segment")
-            if (files.containsKey(currPath.toString()) && files[currPath.toString()] !is Directory) {
-                throw IllegalArgumentException("Path $currPath already exists as non-directory.")
-            }
-
-            files.putIfAbsent(currPath.toString(), Directory(currPath.toString()))
-        }
-    }
-
-    fun ls(path: String): Set<String> {
-        validateAbsolutePath(path)
-
-        if (!files.containsKey(path)) {
-            throw IllegalArgumentException("Directory $path does not exist")
-        }
-
-        val delimiter = if (path == "/") "/" else "$path/"
-        return files.keys
-            .filter { it.substringAfter(delimiter)
-                .let { substring ->
-                    substring.isNotEmpty() && !substring.contains("/")
-                }
-            }
-            .map { it.substringAfter(delimiter) }
-            .sorted()
-            .toSet()
-    }
-
-    fun rm(path: String) {
-        validateAbsolutePath(path)
-
-        if (!files.containsKey(path)) {
-            throw IllegalArgumentException("Path $path does not exist.")
-        }
-
-        if (!files[path]!!.canBeDeleted()) {
-            throw IllegalArgumentException("Directory $path is not empty. Can't delete")
-        }
-
-        val parentDirPath = path.substringBeforeLast('/').takeIf { it.isNotEmpty() } ?: "/"
-        (files[parentDirPath]!! as Directory).removeFile(path)
-        files.remove(path)
-
-    }
-
-    fun validateAbsolutePath(path: String) {
-        if (path == "/") {
-            return
-        }
-
-        if (path.isEmpty()) {
-            throw IllegalArgumentException("path can not be empty")
-        }
-
-        if (!path.startsWith("/")) {
-            throw IllegalArgumentException("Absolute path expected")
-        }
-    }
+    fun validateAbsolutePath(path: String) { TODO("Not yet implemented") }
 }
 
 fun main() {
-    val fs = FileSystem()
+    // val fs = FileSystem()
 
-    fs.mkdir("/yonatanp")
-    fs.mkdir("/yonatanp/Pictures")
-    fs.mkdir("/yonatanp/Documents")
-//    fs.ls("/")
-//    fs.ls("/yonatanp")
+    // fs.mkdir("/yonatanp")
+    // fs.mkdir("/yonatanp/Pictures")
+    // fs.mkdir("/yonatanp/Documents")
 
-    fs.touch("/yonatanp/sample.txt")
-    fs.touch("/yonatanp/Documents/paper.txt")
-    fs.touch("/yonatanp/Pictures/blog.txt")
-    fs.touch("/notes.txt")
+    // fs.touch("/yonatanp/sample.txt")
+    // fs.touch("/yonatanp/Documents/paper.txt")
+    // fs.touch("/yonatanp/Pictures/blog.txt")
+    // fs.touch("/notes.txt")
 
-    //fs.ls("/")
-    println("ls /yonatanp:")
-    fs.ls("/yonatanp").forEach { println(it) }
+    // println("ls /yonatanp:")
+    // fs.ls("/yonatanp").forEach { println(it) }
 
-    println("ls /:")
-    fs.ls("/").forEach { println(it) }
+    // println("ls /:")
+    // fs.ls("/").forEach { println(it) }
 
-    println("rm /yonatanp/sample.txt:")
-    fs.rm("/yonatanp/sample.txt")
+    // println("rm /yonatanp/sample.txt:")
+    // fs.rm("/yonatanp/sample.txt")
 
-    println("ls /yonatanp:")
-    fs.ls("/yonatanp").forEach { println(it) }
+    // println("ls /yonatanp:")
+    // fs.ls("/yonatanp").forEach { println(it) }
 }

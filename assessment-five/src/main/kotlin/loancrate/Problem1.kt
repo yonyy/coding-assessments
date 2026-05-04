@@ -6,16 +6,10 @@ package loancrate
 //  Output: "the"  // appears 3x
 
 fun mostFrequentWord(str: String): String {
-    return str.split(" ")
-        .groupingBy { it.lowercase() }
-        .eachCount()
-        .maxWith(
-            compareByDescending<Map.Entry<String, Int>> { it.value }
-                .thenBy { it.key }
-        )
-        .key
+    TODO("Not yet implemented")
 }
 
 fun main() {
-    println(mostFrequentWord("The quick brown fox the fox jumps over the lazy fox"))
+    // println(mostFrequentWord("The quick brown fox the fox jumps over the lazy fox"))
+    // Expected: the
 }

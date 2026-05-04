@@ -2,9 +2,8 @@ package airbnb
 
 import java.util.PriorityQueue
 
-// Meeting Rooms III
-// Medium–Hard Heap Greedy Sorting
-// You are given n meeting rooms numbered 0 to n-1 and an array of meetings where meetings[i] = [start_i, end_i] represents the start and end time of the i-th meeting (end time is exclusive).
+/* Problem 1 — Meeting Rooms III: assign meetings to lowest-numbered available room,
+   delay if none free (retaining original duration), return room with most meetings. */
 
 // Meeting allocation rules:
 
@@ -26,50 +25,16 @@ data class Meeting(
 )
 
 fun meetingRoom(meetings: List<Pair<Int, Int>>): Int {
-    val availableRooms = PriorityQueue<Int>().apply {
-        (0..<meetings.size).forEach { offer(it) }
-    }
-    val activeMeetings = PriorityQueue(
-        compareBy<Meeting> { it.endTime }.thenBy { it.roomId }
-    )
-    val meetingCount = IntArray(meetings.size) { 0 }
-    val sorted = meetings
-        .sortedBy { it.first }
-
-    for (meeting in sorted) {
-        while(activeMeetings.isNotEmpty() && activeMeetings.peek().endTime <= meeting.first) {
-            availableRooms.offer(activeMeetings.poll().roomId)
-        }
-
-        if (availableRooms.isNotEmpty()) {
-            val room = availableRooms.poll()
-            meetingCount[room]++
-            activeMeetings.offer(Meeting(
-                endTime = meeting.second,
-                roomId = room
-            ))
-        } else {
-            val earliestMeeting = activeMeetings.poll()
-            val duration = meeting.second - meeting.first
-            val meeting = Meeting(
-                endTime = earliestMeeting.endTime + duration,
-                roomId = earliestMeeting.roomId
-            )
-            meetingCount[earliestMeeting.roomId]++
-            activeMeetings.offer(meeting)
-        }
-    }
-
-    return meetingCount.indices.maxByOrNull { meetingCount[it] } ?: 0
+    TODO("Not yet implemented")
 }
 
 fun main() {
-    println(
-        meetingRoom(listOf(
-            0 to 10,
-            1 to 5,
-            2 to 7,
-            3 to 4
-        ))
-    )
+    // println(
+    //     meetingRoom(listOf(
+    //         0 to 10,
+    //         1 to 5,
+    //         2 to 7,
+    //         3 to 4
+    //     ))
+    // )  // Expected: 0
 }

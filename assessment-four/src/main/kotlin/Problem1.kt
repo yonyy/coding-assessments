@@ -30,28 +30,16 @@
 
 fun validCodes(codes: List<String>, used: Set<String>): List<String> {
     // TODO: filter by length == 8, alphanumeric only, not in used, not already returned
-    val seen = used.toMutableSet()
-    return codes.filter {
-        val valid = it.isValidCode() && !seen.contains(it)
-        if (valid) {
-            seen.add(it)
-        }
-
-        return@filter valid
-    }
+    TODO("Not yet implemented")
 }
 
 fun String.isValidCode(): Boolean {
-    val regex = "[a-zA-Z0-9]+".toRegex()
-
-    return this.matches(regex) && this.length == 8
+    // TODO: return true if length == 8 and all characters are alphanumeric
+    TODO("Not yet implemented")
 }
 
 fun main() {
-    val codes = listOf("SAVE20AB", "HI", "ABCD1234", "SAVE20AB", "abc!1234", "FREESHIP")
-    val used  = setOf("FREESHIP")
-    println(validCodes(codes, used)) // Expected: [SAVE20AB, ABCD1234]
-
-    println(validCodes(listOf("AAAAAAAA", "AAAAAAAA"), emptySet())) // Expected: [AAAAAAAA]
-    println(validCodes(emptyList(), emptySet()))                    // Expected: []
+    // println(validCodes(listOf("SAVE20AB", "HI", "ABCD1234", "SAVE20AB", "abc!1234", "FREESHIP"), setOf("FREESHIP")))  // Expected: [SAVE20AB, ABCD1234]
+    // println(validCodes(listOf("AAAAAAAA", "AAAAAAAA"), emptySet()))  // Expected: [AAAAAAAA]
+    // println(validCodes(emptyList(), emptySet()))  // Expected: []
 }

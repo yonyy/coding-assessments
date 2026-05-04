@@ -2,9 +2,8 @@ package airbnb
 
 import kotlin.math.pow
 
-// Binary Tree Right Side View
-// Medium BFS DFS Tree
-// Given the root of a binary tree, imagine yourself standing on the right side of it. Return the values of the nodes you can see, ordered from top to bottom.
+/* Problem 2 — Binary Tree Right Side View: return the values visible from the right side,
+   ordered top to bottom. */
 
 // A node is visible from the right side if it is the rightmost node at its depth level.
 // Example 1
@@ -32,32 +31,11 @@ import kotlin.math.pow
 // Number of nodes: [0, 100]
 // -100 ≤ Node.val ≤ 100
 
-
 fun rightSideView(nodes: List<Int?>): List<Int> {
-    var idx = 0
-    var level = 0
-    val results = mutableListOf<Int>()
-
-    while(idx < nodes.size) {
-        results.add(nodes[idx]!!) // add
-        level++
-
-        val rightIdx = idx + 2.0.pow(level.toDouble()).toInt()
-        val leftIdx = rightIdx - 1
-
-        idx = if (rightIdx < nodes.size && nodes[rightIdx] != null) {
-            rightIdx
-        } else if (leftIdx < nodes.size) {
-            leftIdx
-        } else {
-            break
-        }
-    }
-
-    return results
+    TODO("Not yet implemented")
 }
 
 fun main() {
-    println(rightSideView(listOf(1, 2, 3, null, 5, null, 4)))
-    println(rightSideView(listOf(1, 2, null, null, 5)))
+    // println(rightSideView(listOf(1, 2, 3, null, 5, null, 4)))  // Expected: [1, 3, 4]
+    // println(rightSideView(listOf(1, 2, null, null, 5)))        // Expected: [1, 2, 5]
 }

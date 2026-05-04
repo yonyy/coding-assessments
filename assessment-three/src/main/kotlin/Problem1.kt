@@ -24,12 +24,12 @@ fun palindromicPrefix(s: String): String {
     // TODO: iterate from the full string down to length 2,
     // return s.substring(prefix.length) for the first palindromic prefix found.
     // If none found (length > 1), return the original string.
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun String.isPalindrome(): Boolean {
     // TODO: helper — compare characters from both ends toward the center
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun main() {

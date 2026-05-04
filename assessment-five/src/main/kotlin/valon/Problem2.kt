@@ -3,7 +3,6 @@ package valon
 import java.math.BigDecimal
 import java.time.Instant
 import java.util.UUID
-import kotlin.assert
 
 // A homeowner makes a monthly payment. It must be applied in this strict order:
 // (1) fees & penalties owed, (2) interest owed, (3) principal owed, (4) escrow owed.
@@ -39,27 +38,9 @@ data class Ledger(
     private var loanHistory = mutableListOf(loan)
     private val paymentEvents: MutableList<PaymentEvent> = mutableListOf()
 
-    fun recordPayment(payment: BigDecimal, loanBill: LoanBill): PaymentEvent {
-        val occurredAt = Instant.now()
-        val paymentAllocation = allocate(payment, loanBill)
-        val newLoanState = loanHistory.last().loanAfterPayment(paymentAllocation)
-        val paymentEvent = PaymentEvent(
-            id = UUID.randomUUID().toString(),
-            occurredAt = occurredAt,
-            allocation = paymentAllocation,
-            amount = payment,
-        )
-        paymentEvents.add(paymentEvent)
-        loanHistory.add(newLoanState)
-        return paymentEvent
-    }
+    fun recordPayment(payment: BigDecimal, loanBill: LoanBill): PaymentEvent { TODO("Not yet implemented") }
 
-    fun getStatement(): Statement {
-        return Statement(
-            currentLoanStatus = loanHistory.last(),
-            paymentEvents = paymentEvents,
-        )
-    }
+    fun getStatement(): Statement { TODO("Not yet implemented") }
 }
 
 
@@ -81,23 +62,9 @@ data class Loan(
     val principalOwed: BigDecimal,
     val escrowOwed: BigDecimal,
 ) {
-    fun balance(): BigDecimal {
-        return feesOwed + interestOwed + principalOwed + escrowOwed
-    }
+    fun balance(): BigDecimal { TODO("Not yet implemented") }
 
-    fun loanAfterPayment(paymentAllocation: PaymentAllocation): Loan {
-        assert(paymentAllocation.feesApplied >= BigDecimal.ZERO)
-        assert(paymentAllocation.interestApplied >= BigDecimal.ZERO)
-        assert(paymentAllocation.principalApplied >= BigDecimal.ZERO)
-        assert(paymentAllocation.escrowApplied >= BigDecimal.ZERO)
-
-        return Loan(
-            feesOwed = feesOwed - paymentAllocation.feesApplied,
-            interestOwed = interestOwed - paymentAllocation.interestApplied,
-            principalOwed = principalOwed - paymentAllocation.principalApplied,
-            escrowOwed = escrowOwed - paymentAllocation.escrowApplied,
-        )
-    }
+    fun loanAfterPayment(paymentAllocation: PaymentAllocation): Loan { TODO("Not yet implemented") }
 }
 
 data class LoanBill(
@@ -117,44 +84,25 @@ data class PaymentAllocation(
 )
 
 fun allocate(payment: BigDecimal, loanBill: LoanBill): PaymentAllocation {
-    var remainingBalance = payment
-    fun apply(payment: BigDecimal, dueAmount: BigDecimal): BigDecimal {
-        val applied = minOf(payment, dueAmount)
-        remainingBalance -= applied
-        return applied
-    }
-
-    val feesApplied = apply(remainingBalance, loanBill.feesOwed)
-    val interestApplied = apply(remainingBalance, loanBill.interestOwed)
-    val principalApplied = apply(remainingBalance, loanBill.principalOwed)
-    val escrowApplied = apply(remainingBalance, loanBill.escrowOwed)
-
-    return PaymentAllocation(
-        feesApplied = feesApplied,
-        interestApplied = interestApplied,
-        principalApplied = principalApplied,
-        escrowApplied = escrowApplied,
-        prePayment = if (remainingBalance > BigDecimal.ZERO) remainingBalance else BigDecimal.ZERO,
-        remainingBalance = if (remainingBalance <= BigDecimal.ZERO) BigDecimal.ZERO else remainingBalance
-    )
+    TODO("Not yet implemented")
 }
 
 fun main() {
-    val loan = Loan(
-        feesOwed = BigDecimal.ZERO,
-        interestOwed = (500 * 1000 * 0.0375).toBigDecimal(),
-        principalOwed = (500 * 1000).toBigDecimal(),
-        escrowOwed = 1000.0.toBigDecimal()
-    )
+    // val loan = Loan(
+    //     feesOwed = BigDecimal.ZERO,
+    //     interestOwed = (500 * 1000 * 0.0375).toBigDecimal(),
+    //     principalOwed = (500 * 1000).toBigDecimal(),
+    //     escrowOwed = 1000.0.toBigDecimal()
+    // )
 
-    val ledger = Ledger(loan)
+    // val ledger = Ledger(loan)
 
-    ledger.recordPayment(1000.toBigDecimal(), LoanBill(
-        feesOwed = BigDecimal.ZERO,
-        interestOwed = 800.toBigDecimal(),
-        principalOwed = 100.toBigDecimal(),
-        escrowOwed = 100.toBigDecimal()
-    ))
+    // ledger.recordPayment(1000.toBigDecimal(), LoanBill(
+    //     feesOwed = BigDecimal.ZERO,
+    //     interestOwed = 800.toBigDecimal(),
+    //     principalOwed = 100.toBigDecimal(),
+    //     escrowOwed = 100.toBigDecimal()
+    // ))
 
-    println(ledger.getStatement())
+    // println(ledger.getStatement())
 }

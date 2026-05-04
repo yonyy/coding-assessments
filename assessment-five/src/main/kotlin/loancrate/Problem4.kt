@@ -18,26 +18,17 @@ typealias EventHandler = (String) -> Unit
 class EventBus() {
     val subscriptions = mutableMapOf<String, MutableList<EventHandler>>()
 
-    fun subscribe(event: String, handler: EventHandler) {
-        subscriptions.getOrPut(event) { mutableListOf() }
-            .add(handler)
-    }
+    fun subscribe(event: String, handler: EventHandler) { TODO("Not yet implemented") }
 
-    fun publish(event: String, arg: String) {
-        subscriptions[event]?.forEach {
-            it(arg)
-        }
-    }
+    fun publish(event: String, arg: String) { TODO("Not yet implemented") }
 
-    fun unsubscribe(event: String, handler: EventHandler) {
-        subscriptions[event]?.remove(handler)
-    }
+    fun unsubscribe(event: String, handler: EventHandler) { TODO("Not yet implemented") }
 }
 
 fun main() {
-    val bus = EventBus()
-    val handler: EventHandler = { e -> println("Received: $e") }
-    bus.subscribe("payment.created", handler)
-    bus.publish("payment.created", "txn-abc")
-    bus.unsubscribe("payment.created", handler)
+    // val bus = EventBus()
+    // val handler: EventHandler = { e -> println("Received: $e") }
+    // bus.subscribe("payment.created", handler)
+    // bus.publish("payment.created", "txn-abc")  // Expected: Received: txn-abc
+    // bus.unsubscribe("payment.created", handler)
 }

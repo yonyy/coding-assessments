@@ -16,16 +16,7 @@ package warmups
 // ```
 
 fun charToStringCount(strings: List<String>): Map<Char, Int> {
-    val count = mutableMapOf<Char, Int>()
-
-    strings.forEach {
-        val uniqueChars = it.toSet()
-        uniqueChars.forEach { char ->
-            count[char] = count.getOrDefault(char, 0) + 1
-        }
-    }
-
-    return count
+    TODO("Not yet implemented")
 }
 
 // ## Problem 2 — 3 minutes
@@ -45,12 +36,7 @@ fun charToStringCount(strings: List<String>): Map<Char, Int> {
 // ```
 
 fun firstUniqueChars(s: String): Char? {
-    val map = LinkedHashMap<Char, Int>()
-    for (char in s) {
-        map[char] = (map[char] ?: 0) + 1
-    }
-
-    return map.entries.firstOrNull { it.value == 1 }?.key
+    TODO("Not yet implemented")
 }
 
 // ## Problem 3 — 3 minutes
@@ -70,14 +56,5 @@ fun firstUniqueChars(s: String): Char? {
 // ```
 
 fun hasPairWithSum(nums: List<Int>, target: Int): Boolean {
-    val seen = mutableSetOf<Int>()
-    for (num in nums) {
-        if (seen.contains(target - num)) {
-            return true
-        }
-
-        seen.add(num)
-    }
-
-    return false
+    TODO("Not yet implemented")
 }

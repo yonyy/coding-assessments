@@ -28,66 +28,19 @@
 
 fun encode(route: String): String {
     // TODO: run-length encode — omit count when run length is 1
-    var encoded = StringBuilder()
-
-    var index = 0
-    while (index < route.length) {
-        var count = 0
-        val ch = route[index]
-        while (index < route.length && route[index] == ch) {
-            count++
-            index++
-       }
-        encoded.append(ch)
-        encoded.append(if (count > 1) count.toString() else "")
-    }
-
-    return encoded.toString()
+    TODO("Not yet implemented")
 }
 
 fun decode(encoded: String): String {
-    // Iterate over the encoded string
-    // if we get a char move pointer to the right
-    //  if char is a digit then continue moving pointer building digit => append n times
-    //  if char does not match => continue
-    val decoded = StringBuilder()
-    var index = 0
-
-    while (index < encoded.length) {
-        val ch = encoded[index]
-
-        if (ch.isLetter()) {
-            if (index + 1 >= encoded.length) {
-                decoded.append(ch)
-                break
-            }
-            val nextChar = encoded[++index]
-            if (nextChar.isLetter()) {
-                decoded.append(ch)
-                continue
-            } else {
-                val digitBuilder = StringBuilder()
-                while (index < encoded.length && encoded[index].isDigit()) {
-                    digitBuilder.append(encoded[index++])
-                }
-
-                repeat(digitBuilder.toString().toInt()) {
-                    decoded.append(ch)
-                }
-            }
-
-        }
-    }
-
-    return decoded.toString()
+    TODO("Not yet implemented")
 }
 
 fun main() {
-    println(encode("NNNEESSWWWWN"))  // Expected: N3E2S2W4N
-    println(encode("NSEW"))          // Expected: NSEW
-    println(encode("SSSSSS"))        // Expected: S6
+    // println(encode("NNNEESSWWWWN"))  // Expected: N3E2S2W4N
+    // println(encode("NSEW"))          // Expected: NSEW
+    // println(encode("SSSSSS"))        // Expected: S6
 
-    println(decode("N3E2S2W4N"))     // Expected: NNNEESSWWWWN
-    println(decode("NSEW"))          // Expected: NSEW
-    println(decode("S6"))            // Expected: SSSSSS
+    // println(decode("N3E2S2W4N"))     // Expected: NNNEESSWWWWN
+    // println(decode("NSEW"))          // Expected: NSEW
+    // println(decode("S6"))            // Expected: SSSSSS
 }

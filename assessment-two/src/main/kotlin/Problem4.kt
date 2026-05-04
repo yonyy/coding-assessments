@@ -32,12 +32,12 @@ fun minCoverageRadius(stores: List<Int>, k: Int, roadLength: Int): Double {
     // canCover: greedy check — can k zones of radius r cover all stores?
     fun canCover(r: Double): Boolean {
         // TODO: greedy left-to-right sweep
-        TODO()
+        TODO("Not yet implemented")
     }
 
     // Binary search on r over [0.0, roadLength / 2.0]
     // TODO
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun main() {

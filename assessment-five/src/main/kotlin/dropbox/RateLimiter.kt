@@ -165,28 +165,9 @@ class SlidingWindowRateLimiter(
     private val window = AtomicReference<SlidingWindow>()
     private val lastTimestampMs = AtomicReference<Long>()
 
-    override fun allow(timestampMs: Long): Boolean {
-        if (lastTimestampMs.get() != null && timestampMs <= lastTimestampMs.get()) {
-            throw IllegalArgumentException("Only increasing timestamp allowed")
-        }
+    override fun allow(timestampMs: Long): Boolean { TODO("Not yet implemented") }
 
-        val relativeFrom = (timestampMs - windowMs)
-        if (window.get() == null || (window.get().toMs <= relativeFrom)) {
-            window.set(SlidingWindow(fromMs = relativeFrom, toMs = timestampMs))
-            count.set(0)
-        }
-
-        return (count.get() < limit).also {
-            if (it) {
-                count.incrementAndGet()
-                lastTimestampMs.set(timestampMs)
-            }
-        }
-    }
-    override fun reset() {
-        window.set(null)
-        count.set(0)
-    }
+    override fun reset() { TODO("Not yet implemented") }
 }
 
 open class RateLimiter(
@@ -200,23 +181,9 @@ open class RateLimiter(
 
     val counters = mutableMapOf<Long, AtomicInteger>()
 
-    open fun allow(timestampMs: Long): Boolean {
-        require(timestampMs >= 0) { "Timestamp must be positive" }
+    open fun allow(timestampMs: Long): Boolean { TODO("Not yet implemented") }
 
-        val bucket = timestampMs / windowMs
-        val count = counters.getOrPut(bucket) { AtomicInteger(0) }
-
-        if (count.get() < limit) {
-            count.incrementAndGet()
-            return true
-        }
-
-        return false
-    }
-
-    open fun reset() {
-        counters.clear()
-    }
+    open fun reset() { TODO("Not yet implemented") }
 }
 
 interface RateLimiterFactory {
@@ -229,8 +196,8 @@ data class UserStats(
     val totalAllowed: Int = 0,
     val totalDenied: Int = 0
 ) {
-    fun incrementAllowed(): UserStats = copy(totalRequested = totalRequested + 1, totalAllowed = totalAllowed + 1)
-    fun incrementDenied(): UserStats = copy(totalRequested = totalRequested + 1, totalDenied = totalDenied + 1)
+    fun incrementAllowed(): UserStats { TODO("Not yet implemented") }
+    fun incrementDenied(): UserStats { TODO("Not yet implemented") }
 }
 
 data class UserRateLimiter(
@@ -239,18 +206,9 @@ data class UserRateLimiter(
 ) {
     var userStats: UserStats = UserStats(userId)
 
-    fun allow(timestampMs: Long): Boolean {
-        val allowed = rateLimiter.allow(timestampMs)
-        userStats = if (allowed) {
-            userStats.incrementAllowed()
-        } else {
-            userStats.incrementDenied()
-        }
+    fun allow(timestampMs: Long): Boolean { TODO("Not yet implemented") }
 
-        return allowed
-    }
-
-    fun reset() = rateLimiter.reset()
+    fun reset() { TODO("Not yet implemented") }
 }
 
 class RateLimiterRegistry(
@@ -258,97 +216,52 @@ class RateLimiterRegistry(
 ) {
     val rateRegistry = mutableMapOf<String, UserRateLimiter>()
 
-    fun allow(userId: String, timestampMs: Long): Boolean {
-        val userRateLimiter = rateRegistry.getOrPut(userId) {
-            UserRateLimiter(
-                rateLimiter = factory.create(),
-                userId = userId
-            )
-        }
+    fun allow(userId: String, timestampMs: Long): Boolean { TODO("Not yet implemented") }
 
-        return userRateLimiter.allow(timestampMs)
-    }
+    fun reset(userId: String) { TODO("Not yet implemented") }
 
-    fun reset(userId: String) {
-        rateRegistry[userId]?.reset()
-    }
+    fun resetAll() { TODO("Not yet implemented") }
 
-    fun resetAll() {
-        rateRegistry.values.forEach { it.reset() }
-    }
-
-    fun getStats(userId: String): UserStats? {
-        return rateRegistry.get(userId)?.userStats
-    }
+    fun getStats(userId: String): UserStats? { TODO("Not yet implemented") }
 }
 
 class DefaultRateLimiterFactory: RateLimiterFactory {
-    override fun create(): RateLimiter = RateLimiter(60L * 1000L, 1)
+    override fun create(): RateLimiter { TODO("Not yet implemented") }
 }
 
 fun main() {
-    val windowMs = (60 * 1000).toLong()
-    val rateLimiter = RateLimiter(
-        windowMs = windowMs,
-        limit = 1
-    )
+    // val windowMs = (60 * 1000).toLong()
+    // val rateLimiter = RateLimiter(windowMs = windowMs, limit = 1)
 
-    println("rateLimiter.allow(0s)")
-    println(rateLimiter.allow(0))
-    println("rateLimiter.allow(1s)")
-    println(rateLimiter.allow(1 * 1000))
-    println("rateLimiter.allow(2s)")
-    println(rateLimiter.allow(2 * 1000))
-    println("rateLimiter.reset()")
-    rateLimiter.reset()
-    println("rateLimiter.allow(3s)")
-    println(rateLimiter.allow(3 * 1000))
-    println("rateLimiter.allow(4s)")
-    println(rateLimiter.allow(4 * 1000))
-    println("rateLimiter.allow(60s)")
-    println(rateLimiter.allow(windowMs))
+    // println("rateLimiter.allow(0s)")
+    // println(rateLimiter.allow(0))              // Expected: true
+    // println("rateLimiter.allow(1s)")
+    // println(rateLimiter.allow(1 * 1000))       // Expected: false
+    // println("rateLimiter.allow(2s)")
+    // println(rateLimiter.allow(2 * 1000))       // Expected: false
+    // println("rateLimiter.reset()")
+    // rateLimiter.reset()
+    // println("rateLimiter.allow(3s)")
+    // println(rateLimiter.allow(3 * 1000))       // Expected: true
+    // println("rateLimiter.allow(60s)")
+    // println(rateLimiter.allow(windowMs))       // Expected: true
 
-    val slidingWindow = SlidingWindowRateLimiter(
-        windowMs = windowMs,
-        limit = 1
-    )
+    // val slidingWindow = SlidingWindowRateLimiter(windowMs = windowMs, limit = 1)
 
-    println("slidingWindow.allow(0s)")
-    println(slidingWindow.allow(0))
-    println("slidingWindow.allow(1s)")
-    println(slidingWindow.allow(1 * 1000))
-    println("slidingWindow.allow(2s)")
-    println(slidingWindow.allow(2 * 1000))
-    println("slidingWindow.reset()")
-    slidingWindow.reset()
-    println("slidingWindow.allow(3s)")
-    println(slidingWindow.allow(3 * 1000))
-    println("slidingWindow.allow(4s)")
-    println(slidingWindow.allow(4 * 1000))
-    println("slidingWindow.allow(60s)")
-    println(slidingWindow.allow(windowMs))
-    println("slidingWindow.allow(63s)")
-    println(slidingWindow.allow(windowMs + 3 * 1000))
+    // println("slidingWindow.allow(0s)")
+    // println(slidingWindow.allow(0))            // Expected: true
+    // println("slidingWindow.allow(1s)")
+    // println(slidingWindow.allow(1 * 1000))     // Expected: false
+    // println("slidingWindow.reset()")
+    // slidingWindow.reset()
+    // println("slidingWindow.allow(3s)")
+    // println(slidingWindow.allow(3 * 1000))     // Expected: true
 
-    val defaultRateLimiterFactory = DefaultRateLimiterFactory()
-    val registry = RateLimiterRegistry(defaultRateLimiterFactory)
-    val user = "yonatanp"
-    println("registry.allow(0s, $user)")
-    println(registry.allow(user,0))
-    println("registry.allow(1s, $user)")
-    println(registry.allow(user,1 * 1000))
-    println("registry.allow(2s, $user)")
-    println(registry.allow(user,2 * 1000))
-    println("registry.getStats($user)")
-    println(registry.getStats(user))
-    println("registry.reset($user)")
-    registry.reset(user)
-    println("registry.allow(3s, $user)")
-    println(registry.allow(user,3 * 1000))
-    println("registry.allow(4s, $user)")
-    println(registry.allow(user,4 * 1000))
-    println("registry.allow(60s, $user)")
-    println(registry.allow(user,windowMs))
-    println("registry.getStats($user)")
-    println(registry.getStats(user))
+    // val defaultRateLimiterFactory = DefaultRateLimiterFactory()
+    // val registry = RateLimiterRegistry(defaultRateLimiterFactory)
+    // val user = "yonatanp"
+    // println("registry.allow(0s, $user)")
+    // println(registry.allow(user, 0))           // Expected: true
+    // println("registry.getStats($user)")
+    // println(registry.getStats(user))
 }

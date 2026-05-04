@@ -1,7 +1,5 @@
 package dropbox
 
-import dropbox.LogLevel
-import java.time.Instant
 import java.util.TreeMap
 
 //  Background - You are building an in-memory log analysis system.
@@ -104,35 +102,7 @@ class LogFilter(
     val toTimestamp: Long? = null,
     val messageContains: String? = null,
 ) {
-    fun matches(logEntry: LogEntry): Boolean {
-        return levelMatches(logEntry.level) &&
-                serviceMatches(logEntry.service) &&
-                messageMatches(logEntry.message) &&
-                timestampMatches(logEntry.timestamp)
-    }
-
-    private fun levelMatches(logLevel: LogLevel): Boolean {
-        return level == null || level == logLevel
-    }
-
-    private fun serviceMatches(logService: String): Boolean {
-        return service == null || service == logService
-    }
-
-    private fun messageMatches(logMessage: String): Boolean {
-        return messageContains == null || logMessage.contains(messageContains, ignoreCase = true)
-    }
-
-    private fun timestampMatches(logTimestamp: Long): Boolean {
-        val fromMatches = if (fromTimestamp == null) true else {
-            logTimestamp >= fromTimestamp
-        }
-        val toMatches = if (toTimestamp == null) true else {
-            logTimestamp <= toTimestamp
-        }
-
-        return fromMatches && toMatches
-    }
+    fun matches(logEntry: LogEntry): Boolean { TODO("Not yet implemented") }
 }
 
 class LogEntry(
@@ -151,101 +121,48 @@ class LogCollection {
         const val MIN_LENGTH = 4
     }
 
-    fun addLogEntry(entry: String) {
-        val segments = entry.split(" ")
+    fun addLogEntry(entry: String) { TODO("Not yet implemented") }
 
-        if (segments.size < MIN_LENGTH) {
-            throw IllegalArgumentException("Invalid log entry: $entry")
-        }
-
-        val timestampStr = segments[0]
-        val levelStr = segments[1]
-        val service = segments[2]
-        val message = segments.drop(3).joinToString(" ")
-        val timestamp = runCatching {
-            timestampStr.toLong()
-        }.getOrElse { throw IllegalStateException("Invalid timestamp: $timestampStr") }
-
-        val level = runCatching {
-            LogLevel.valueOf(levelStr)
-        }.getOrElse { throw IllegalStateException("Invalid level: $levelStr") }
-
-        if (service.isEmpty()) {
-            throw IllegalArgumentException("Service not found: $service")
-        }
-
-        val entry = LogEntry(timestamp, level, service, message)
-        logs[entry.timestamp] = entry
-    }
-
-    fun getLogs(
-        logFilter: LogFilter = LogFilter()
-    ): List<LogEntry> {
-        return logs.values.filter {
-            logFilter.matches(it)
-        }
-    }
+    fun getLogs(logFilter: LogFilter = LogFilter()): List<LogEntry> { TODO("Not yet implemented") }
 }
 
 class LogSystem {
     private val logs = LogCollection()
 
-    fun ingest(line: String) {
-        logs.addLogEntry(line)
-    }
+    fun ingest(line: String) { TODO("Not yet implemented") }
 
-    fun getLogs(service: String): List<LogEntry> {
-        return logs.getLogs(LogFilter(
-            service = service
-        ))
-    }
+    fun getLogs(service: String): List<LogEntry> { TODO("Not yet implemented") }
 
-    fun getErrors(): List<LogEntry> {
-        return logs.getLogs(LogFilter(
-            level = LogLevel.ERROR
-        ))
-    }
+    fun getErrors(): List<LogEntry> { TODO("Not yet implemented") }
 
-    fun query(logFilter: LogFilter): List<LogEntry> {
-        return logs.getLogs(logFilter)
-    }
+    fun query(logFilter: LogFilter): List<LogEntry> { TODO("Not yet implemented") }
 
-    fun aggregate(filter: LogFilter): LogSummary {
-        val results = query(filter)
-        return LogSummary(
-            totalCount = results.size,
-            countByLevel = results.groupingBy { it.level }.eachCount(),
-            countByService = results.groupingBy { it.service }.eachCount(),
-            firstTimestamp = results.firstOrNull()?.timestamp,
-            lastTimestamp = results.lastOrNull()?.timestamp,
-        )
-    }
+    fun aggregate(filter: LogFilter): LogSummary { TODO("Not yet implemented") }
 }
 
 fun main() {
-    val logSystem = LogSystem()
+    // val logSystem = LogSystem()
 
-    logSystem.ingest("1700000000 ERROR payments Service unavailable")
-    logSystem.ingest("1700000000 ERROR payments Service unavailable")
-    logSystem.ingest("1700000001 INFO auth User login successful")
-    logSystem.ingest("1700000002 WARN payments Retry attempt 1")
-    logSystem.ingest("1700000003 ERROR auth Token validation failed")
-    logSystem.ingest("1700000004 INFO payments Payment processed")
-    println("getLogs('payments')")
-    logSystem.getLogs("payments").forEach { println(it.formattedMessage()) }
-    println("getLogs('auth')")
-    logSystem.getLogs("auth").forEach { println(it.formattedMessage()) }
-    println("getError()")
-    logSystem.getErrors().forEach { println(it.formattedMessage()) }
-    println("query()")
-    logSystem.query(LogFilter()).forEach { println(it.formattedMessage()) }
-    println("query(fromTimestamp = 1700000003, toTimestamp = 1700000003)")
-    logSystem.query(LogFilter(fromTimestamp = 1700000003, toTimestamp = 1700000003)).forEach { println(it.formattedMessage()) }
-    println("aggregate()")
-    val summary = logSystem.aggregate(LogFilter())
-    println("totalCount=${summary.totalCount}")
-    println("countByLevel=${summary.countByLevel}")
-    println("countByService=${summary.countByService}")
-    println("firstTimestamp=${summary.firstTimestamp}")
-    println("lastTimestamp=${summary.lastTimestamp}")
+    // logSystem.ingest("1700000000 ERROR payments Service unavailable")
+    // logSystem.ingest("1700000001 INFO auth User login successful")
+    // logSystem.ingest("1700000002 WARN payments Retry attempt 1")
+    // logSystem.ingest("1700000003 ERROR auth Token validation failed")
+    // logSystem.ingest("1700000004 INFO payments Payment processed")
+    // println("getLogs('payments')")
+    // logSystem.getLogs("payments").forEach { println(it.formattedMessage()) }
+    // println("getLogs('auth')")
+    // logSystem.getLogs("auth").forEach { println(it.formattedMessage()) }
+    // println("getError()")
+    // logSystem.getErrors().forEach { println(it.formattedMessage()) }
+    // println("query()")
+    // logSystem.query(LogFilter()).forEach { println(it.formattedMessage()) }
+    // println("query(fromTimestamp = 1700000003, toTimestamp = 1700000003)")
+    // logSystem.query(LogFilter(fromTimestamp = 1700000003, toTimestamp = 1700000003)).forEach { println(it.formattedMessage()) }
+    // println("aggregate()")
+    // val summary = logSystem.aggregate(LogFilter())
+    // println("totalCount=${summary.totalCount}")
+    // println("countByLevel=${summary.countByLevel}")
+    // println("countByService=${summary.countByService}")
+    // println("firstTimestamp=${summary.firstTimestamp}")
+    // println("lastTimestamp=${summary.lastTimestamp}")
 }

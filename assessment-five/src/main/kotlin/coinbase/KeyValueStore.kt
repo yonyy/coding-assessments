@@ -47,7 +47,7 @@ data class Value(
     val tombstoned: Boolean = false
 ) {
     fun isExpired(timestamp: Long): Boolean {
-        return expiresAt != null && timestamp >= expiresAt
+        TODO("Not yet implemented")
     }
 }
 
@@ -58,10 +58,10 @@ data class TrackedValue(
         if (value != null) add(value)
     }
 
-    fun isExpired(timestamp: Long): Boolean = trackedValues.last().isExpired(timestamp)
-    fun isTombstoned(): Boolean = trackedValues.last().tombstoned
-    fun latestValue(): Value = trackedValues.last()
-    fun add(value: Value) = trackedValues.add(value)
+    fun isExpired(timestamp: Long): Boolean { TODO("Not yet implemented") }
+    fun isTombstoned(): Boolean { TODO("Not yet implemented") }
+    fun latestValue(): Value { TODO("Not yet implemented") }
+    fun add(value: Value) { TODO("Not yet implemented") }
 }
 
 class KeyValueStore {
@@ -76,157 +76,56 @@ class KeyValueStore {
         const val KEY_EXPIRED = "KEY_EXPIRED"
     }
 
-    private fun currentWindow(): MutableMap<String, TrackedValue> {
-        return transactions.lastOrNull()?.store ?: store
-    }
+    private fun currentWindow(): MutableMap<String, TrackedValue> { TODO("Not yet implemented") }
 
-    private fun resolve(key: String): Value? {
-        val v = currentWindow()[key]
-        return if (v?.isTombstoned() == false) {
-            v.latestValue()
-        } else {
-            null
-        }
-    }
+    private fun resolve(key: String): Value? { TODO("Not yet implemented") }
 
-    fun set(key: String, value: String, timestamp: Long, ttl: Long? = null): String {
-        val v = Value(
-            value = value,
-            version = timestamp,
-            expiresAt = if (ttl != null) timestamp + ttl else null
-        )
+    fun set(key: String, value: String, timestamp: Long, ttl: Long? = null): String { TODO("Not yet implemented") }
 
-        currentWindow().getOrPut(key) { TrackedValue() }.add(v)
-        return OK
-    }
+    fun get(key: String, timestamp: Long): String { TODO("Not yet implemented") }
 
-    fun get(key: String, timestamp: Long): String {
-        return resolve(key)?.let {
-            if (it.isExpired(timestamp)) {
-                KEY_EXPIRED
-            } else {
-                it.value
-            }
-        } ?: KEY_NOT_FOUND
-    }
+    fun delete(key: String, timestamp: Long): String { TODO("Not yet implemented") }
 
-    fun delete(key: String, timestamp: Long): String {
-        return if (currentWindow().containsKey(key)) {
-            currentWindow()[key]!!.add(currentWindow()[key]!!.latestValue().copy(
-                version = timestamp,
-                tombstoned = true
-            ))
+    fun exists(key: String, timestamp: Long): String { TODO("Not yet implemented") }
 
-            DELETED
-        } else {
-            KEY_NOT_FOUND
-        }
-    }
+    fun getKeys(timestamp: Long): List<String> { TODO("Not yet implemented") }
 
-    fun exists(key: String, timestamp: Long): String {
-        return (currentWindow().containsKey(key) &&
-                (!currentWindow()[key]!!.latestValue().tombstoned &&
-                        !currentWindow()[key]!!.latestValue().isExpired(timestamp))
-                ).toString()
-    }
+    fun prefixSearch(prefix: String, timestamp: Long? = null): List<Pair<String, String>> { TODO("Not yet implemented") }
 
-    fun getKeys(timestamp: Long): List<String> {
-        return currentWindow().keys
-            .filter { !currentWindow()[it]!!.latestValue().tombstoned &&
-                    !currentWindow()[it]!!.latestValue().isExpired(timestamp)
-            }
-            .sorted()
-    }
+    fun countPrefix(prefix: String): Int { TODO("Not yet implemented") }
 
-    fun prefixSearch(prefix: String, timestamp: Long? = null): List<Pair<String, String>> {
-        return currentWindow()
-            .entries
-            .filter {
-                it.key.startsWith(prefix) &&
-                        !it.value.isTombstoned() &&
-                        (timestamp == null || !it.value.isExpired(timestamp))
-            }
-            .sortedBy { it.key }
-            .map { it.key to it.value.latestValue().value }
-    }
+    fun begin() { TODO("Not yet implemented") }
 
-    fun countPrefix(prefix: String): Int {
-        return prefixSearch(prefix).size
-    }
+    fun commit(): String { TODO("Not yet implemented") }
 
-    fun begin() {
-        transactions.addLast(
-            Transaction(
-                store = currentWindow().toMutableMap()
-            )
-        )
-    }
+    fun rollback(): String? { TODO("Not yet implemented") }
 
-    fun commit(): String {
-        if (transactions.isEmpty()) {
-            return NO_TRANSACTION
-        }
-
-        val committed = transactions.removeLast()
-        committed.store.entries.forEach {
-            if (it.value.isTombstoned()) {
-                currentWindow().remove(it.key)
-            } else {
-                currentWindow()[it.key] = it.value
-            }
-        }
-
-        return OK
-    }
-
-    fun rollback(): String? {
-        if (transactions.isEmpty()) {
-            return NO_TRANSACTION
-        }
-
-        transactions.removeLast()
-        return null
-    }
-
-    fun scanExpiring(timestamp: Long, windowMs: Long): List<Pair<String, Long>> {
-        return currentWindow()
-            .entries
-            .filter {
-                it.value.latestValue().expiresAt != null &&
-                        !it.value.isTombstoned() &&
-                        it.value.latestValue().expiresAt!! <= timestamp + windowMs &&
-                        it.value.latestValue().expiresAt!! >= timestamp
-            }
-            .sortedBy { it.value.latestValue().expiresAt }
-            .map { it.key to it.value.latestValue().expiresAt!! }
-    }
+    fun scanExpiring(timestamp: Long, windowMs: Long): List<Pair<String, Long>> { TODO("Not yet implemented") }
 }
 
 class MonotonicVersion {
     var timestamp: Long = 0
     private set
 
-    fun inc(): Long {
-        return timestamp++
-    }
+    fun inc(): Long { TODO("Not yet implemented") }
 }
 
 fun main() {
-    val store = KeyValueStore()
-    val timestamp = MonotonicVersion()
+    // val store = KeyValueStore()
+    // val timestamp = MonotonicVersion()
 
-    store.set("user1.id", "xyz", timestamp.inc())
-    store.set("user2.id", "abc", timestamp.inc())
+    // store.set("user1.id", "xyz", timestamp.inc())
+    // store.set("user2.id", "abc", timestamp.inc())
 
-    store.begin()
-    store.set("user1.id", "xyz123", timestamp.inc())
-    store.begin()
-    store.set("user2.id", "abc123", timestamp.inc())
-    store.rollback()
-    store.commit()
+    // store.begin()
+    // store.set("user1.id", "xyz123", timestamp.inc())
+    // store.begin()
+    // store.set("user2.id", "abc123", timestamp.inc())
+    // store.rollback()
+    // store.commit()
 
-    println("store.get(\"user1.id\")")
-    println(store.get("user1.id", timestamp.inc()))
-    println("store.get(\"user2.id\")")
-    println(store.get("user2.id", timestamp.inc()))
+    // println("store.get(\"user1.id\")")
+    // println(store.get("user1.id", timestamp.inc()))  // Expected: xyz123
+    // println("store.get(\"user2.id\")")
+    // println(store.get("user2.id", timestamp.inc()))  // Expected: abc
 }

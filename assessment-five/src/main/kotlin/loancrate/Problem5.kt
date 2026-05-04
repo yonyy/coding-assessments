@@ -26,18 +26,5 @@ data class LoanNode(
 )
 
 fun sumOfApprovedNodes(node: LoanNode): Int {
-    val queue = ArrayDeque<LoanNode>().apply { add(node) }
-    var sum = 0
-
-    while (queue.isNotEmpty()) {
-        val node = queue.removeFirst()
-        if (node.approved) {
-            sum += node.amount
-        }
-
-        node.left?.let { queue.addLast(it) }
-        node.right?.let { queue.addLast(it) }
-    }
-
-    return sum
+    TODO("Not yet implemented")
 }

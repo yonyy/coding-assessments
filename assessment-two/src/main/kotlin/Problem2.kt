@@ -23,7 +23,7 @@
 
 fun finalItem(substitutions: Map<String, String>, start: String): String {
     // TODO: follow the chain until no substitution exists
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun main() {

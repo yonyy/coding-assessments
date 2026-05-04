@@ -27,92 +27,42 @@ class TunnelRateLimiterV2(
     // tunnelId => list of accepted requests where val is the timestamp accepted
     val tunnels = mutableMapOf<String, ArrayDeque<Long>>()
 
-    fun tryAcquire(clientId: String): Boolean {
-        return if (remainingCapacity(clientId) < maxRequests) {
-            tunnels.getOrPut(clientId) { ArrayDeque() }
-                .addLast(Instant.now().toEpochMilli())
-            true
-        } else {
-            false
-        }
-    }
+    fun tryAcquire(clientId: String): Boolean { TODO("Not yet implemented") }
 
-    fun remainingCapacity(clientId: String): Int {
-        val requests = tunnels[clientId] ?: return maxRequests
-        val currentMs = Instant.now().toEpochMilli()
-        return maxOf(maxRequests, maxRequests - requests.count { it > currentMs - windowMs })
-    }
+    fun remainingCapacity(clientId: String): Int { TODO("Not yet implemented") }
 
-    fun resetClient(clientId: String) {
-        tunnels[clientId]?.clear()
-    }
+    fun resetClient(clientId: String) { TODO("Not yet implemented") }
 
-    fun evictStaleClients(): Int {
-        val currentMs = Instant.now().toEpochMilli()
-        var evicted = 0
-        tunnels.values.forEach { requests ->
-            while (requests.isNotEmpty() && requests.first() <= currentMs - windowMs) {
-                requests.removeFirst()
-                evicted++
-            }
-        }
-
-        return evicted
-    }
+    fun evictStaleClients(): Int { TODO("Not yet implemented") }
 }
 
 fun main() {
-    val windowMs = 3L * 1000L
-    val tunnelRateLimiterV2 = TunnelRateLimiterV2(
-        windowMs = windowMs,
-        maxRequests = 1
-    )
+    // val windowMs = 3L * 1000L
+    // val tunnelRateLimiterV2 = TunnelRateLimiterV2(windowMs = windowMs, maxRequests = 1)
 
-    val client1 = "client1"
-    val client2 = "client2"
+    // val client1 = "client1"
+    // val client2 = "client2"
 
-    println("tryAcquire: $client1")
-    println(tunnelRateLimiterV2.tryAcquire(client1))
-    println("tryAcquire: $client2")
-    println(tunnelRateLimiterV2.tryAcquire(client2))
+    // println("tryAcquire: $client1")
+    // println(tunnelRateLimiterV2.tryAcquire(client1))    // Expected: true
+    // println("tryAcquire: $client2")
+    // println(tunnelRateLimiterV2.tryAcquire(client2))    // Expected: true
 
-    println("remainingCapacity: $client1")
-    println(tunnelRateLimiterV2.remainingCapacity(client1))
-    println("remainingCapacity: $client2")
-    println(tunnelRateLimiterV2.remainingCapacity(client2))
+    // println("remainingCapacity: $client1")
+    // println(tunnelRateLimiterV2.remainingCapacity(client1))  // Expected: 0
+    // println("remainingCapacity: $client2")
+    // println(tunnelRateLimiterV2.remainingCapacity(client2))  // Expected: 0
 
-    println("tryAcquire: $client1")
-    println(tunnelRateLimiterV2.tryAcquire(client1))
-    println("tryAcquire: $client2")
-    println(tunnelRateLimiterV2.tryAcquire(client2))
+    // println("tryAcquire: $client1")
+    // println(tunnelRateLimiterV2.tryAcquire(client1))    // Expected: false
+    // println("tryAcquire: $client2")
+    // println(tunnelRateLimiterV2.tryAcquire(client2))    // Expected: false
 
-    println("resetClient: $client1")
-    tunnelRateLimiterV2.resetClient(client1)
-    println("resetClient: $client2")
-    tunnelRateLimiterV2.resetClient(client2)
+    // println("resetClient: $client1")
+    // tunnelRateLimiterV2.resetClient(client1)
+    // println("resetClient: $client2")
+    // tunnelRateLimiterV2.resetClient(client2)
 
-    println("remainingCapacity: $client1")
-    println(tunnelRateLimiterV2.remainingCapacity(client1))
-    println("remainingCapacity: $client2")
-    println(tunnelRateLimiterV2.remainingCapacity(client2))
-
-    println("tryAcquire: $client1")
-    println(tunnelRateLimiterV2.tryAcquire(client1))
-    println("tryAcquire: $client2")
-    println(tunnelRateLimiterV2.tryAcquire(client2))
-
-    Thread.sleep(windowMs)
-
-    println("evictStaleClients")
-    println(tunnelRateLimiterV2.evictStaleClients())
-
-    println("remainingCapacity: $client1")
-    println(tunnelRateLimiterV2.remainingCapacity(client1))
-    println("remainingCapacity: $client2")
-    println(tunnelRateLimiterV2.remainingCapacity(client2))
-
-    println("tryAcquire: $client1")
-    println(tunnelRateLimiterV2.tryAcquire(client1))
-    println("tryAcquire: $client2")
-    println(tunnelRateLimiterV2.tryAcquire(client2))
+    // println("evictStaleClients")
+    // println(tunnelRateLimiterV2.evictStaleClients())    // Expected: 2
 }

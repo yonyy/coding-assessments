@@ -110,31 +110,7 @@ data class EventFilter(
     val topic: String? = null,
     val fromSequence: Long? = null
 ) {
-    fun matches(event: Event): Boolean {
-      return idMatches(event) &&
-              topicMatches(event) &&
-              fromTimestampMatches(event) &&
-              fromSequenceMatches(event)
-    }
-
-    private fun idMatches(event: Event): Boolean {
-        return id == null || event.id == id
-    }
-
-    private fun topicMatches(event: Event): Boolean {
-        return topic == null || event.topic == topic
-    }
-
-    private fun fromTimestampMatches(event: Event): Boolean {
-        return fromTimestamp == null || event.timestamp >= fromTimestamp
-    }
-
-    private fun fromSequenceMatches(event: Event): Boolean {
-        return fromSequence == null ||
-                (event.sequenceNumber != null && event.sequenceNumber >= fromSequence)
-    }
-
-    // TODO: fill out more filters as needed
+    fun matches(event: Event): Boolean { TODO("Not yet implemented") }
 }
 
 data class Event(
@@ -146,33 +122,10 @@ data class Event(
 ) {
     companion object {
         const val MIN_LENGTH = 4
-        fun parseFrom(line: String): Event {
-            if (line.isBlank()) {
-                throw IllegalArgumentException("Empty event")
-            }
-
-            val segments = line.split(" ")
-            if (segments.size < MIN_LENGTH) {
-                throw IllegalArgumentException("Invalid event: $line")
-            }
-
-            val id = segments[0].takeIf { it.isNotEmpty() } ?: throw IllegalArgumentException("Event id can't be empty")
-            val timestamp = runCatching {
-                segments[1].toLong()
-            }.getOrElse { throw IllegalArgumentException("Invalid timestamp: ${segments[1]}") }
-            val topic = segments[2].takeIf { it.isNotEmpty() } ?: throw IllegalArgumentException("Topic can't be empty")
-            val payload = segments.drop(3).joinToString(" ")
-
-            return Event(
-                id = id,
-                timestamp = timestamp,
-                topic = topic,
-                payload = payload
-            )
-        }
+        fun parseFrom(line: String): Event { TODO("Not yet implemented") }
     }
 
-    fun formattedMessage(): String = "$id $timestamp $topic $payload"
+    fun formattedMessage(): String { TODO("Not yet implemented") }
 }
 
 class EventPipeline {
@@ -180,135 +133,61 @@ class EventPipeline {
     private val subscribedTopics = mutableMapOf<String, MutableList<EventConsumer>>()
     private val topicSequenceNumbers = mutableMapOf<String, AtomicInteger>()
 
-    fun publish(line: String) {
-        val event = Event.parseFrom(line)
-        publish(event)
-    }
+    fun publish(line: String) { TODO("Not yet implemented") }
 
-    private fun publish(event: Event) {
-        events.putIfAbsent(event.id, event)
-        subscribedTopics[event.topic]?.forEach { consumer ->
-            runCatching {
-                consumer.onEvent(event)
-            }
-        }
-    }
+    fun getEvents(topic: String): List<Event> { TODO("Not yet implemented") }
 
-    fun getEvents(topic: String): List<Event> {
-        return getEvents(EventFilter(topic = topic))
-    }
+    fun getEvent(eventId: String): Event? { TODO("Not yet implemented") }
 
-    fun getEvent(eventId: String): Event? {
-        return events[eventId]
-    }
+    fun publishBatch(lines: List<String>): PublishResult { TODO("Not yet implemented") }
 
-    fun publishBatch(lines: List<String>): PublishResult {
-        val batchEvents = lines.map {
-            runCatching {
-                Event.parseFrom(it)
-            }.getOrElse { null }
-        }
-        val validEvents = batchEvents.filterNotNull()
-        val erroredCount = batchEvents.size - validEvents.size
-        val newEvents = validEvents.filter { events[it.id] == null }
-        val duplicateCount = validEvents.size - newEvents.size
+    fun replay(topic: String, fromTimestamp: Long): List<Event> { TODO("Not yet implemented") }
 
-        newEvents.forEach {
-            publish(it)
-        }
+    fun subscribe(topic: String, consumer: EventConsumer) { TODO("Not yet implemented") }
 
-        return PublishResult(
-            accepted = newEvents.size,
-            duplicates = duplicateCount,
-            errors = erroredCount
-        )
-    }
+    fun replayTo(topic: String, fromTimestamp: Long, consumer: EventConsumer) { TODO("Not yet implemented") }
 
-    fun replay(topic: String, fromTimestamp: Long): List<Event> {
-        return getEvents(EventFilter(topic = topic, fromTimestamp = fromTimestamp))
-    }
+    fun publishOrdered(line: String, expectedSequence: Long) { TODO("Not yet implemented") }
 
-    fun subscribe(topic: String, consumer: EventConsumer) {
-        subscribedTopics.getOrPut(topic) { mutableListOf() }.add(consumer)
-    }
+    fun getSequence(topic: String): Long { TODO("Not yet implemented") }
 
-    fun replayTo(topic: String, fromTimestamp: Long, consumer: EventConsumer) {
-        replay(topic, fromTimestamp).forEach {
-            consumer.onEvent(it)
-        }
-    }
-
-    fun publishOrdered(line: String, expectedSequence: Long) {
-        val event = Event.parseFrom(line)
-        val currentSequence = topicSequenceNumbers.getOrPut(event.topic) { AtomicInteger(0) }
-        if (currentSequence.toLong() != expectedSequence) {
-            throw OutOfOrderException()
-        }
-
-        val eventWithSequence = Event(
-            id = event.id,
-            timestamp = event.timestamp,
-            topic = event.topic,
-            payload = event.payload,
-            sequenceNumber = currentSequence.toLong()
-        )
-        publish(eventWithSequence)
-        topicSequenceNumbers[event.topic]?.incrementAndGet()
-    }
-
-    fun getSequence(topic: String): Long {
-        return topicSequenceNumbers.getOrPut(topic) { AtomicInteger(0) }.toLong()
-    }
-
-    fun replayFrom(topic: String, fromSequence: Long): List<Event> {
-        return getEvents(EventFilter(topic = topic, fromSequence = fromSequence))
-    }
-
-    private fun getEvents(filter: EventFilter): List<Event> {
-        return events.values.filter {
-            filter.matches(it)
-        }.sortedWith(
-            compareBy<Event> { it.timestamp }.thenBy { it.id }
-        )
-    }
+    fun replayFrom(topic: String, fromSequence: Long): List<Event> { TODO("Not yet implemented") }
 }
 
 class SimpleEventConsumer: EventConsumer {
-    override fun onEvent(event: Event) {
-        println("Consumed Event: ${event.id}")
-    }
+    override fun onEvent(event: Event) { TODO("Not yet implemented") }
 }
 
 fun main() {
-    val event1 = "evt001 1700000000000 payments charge.created amount=100"
-    val event2 = "evt002 1700000001000 auth user.login userId=42"
-    val event3 = "evt003 1700000002000 payments charge.updated amount=150"
-    val event4 = "evt004 1700000003000 auth user.logout userId=42"
-    val event5 = "evt005 1700000004000 payments charge.failed amount=150"
-    val event6 = "evt006 1700000004000 payments charge.failed amount=250"
+    // val event1 = "evt001 1700000000000 payments charge.created amount=100"
+    // val event2 = "evt002 1700000001000 auth user.login userId=42"
+    // val event3 = "evt003 1700000002000 payments charge.updated amount=150"
+    // val event4 = "evt004 1700000003000 auth user.logout userId=42"
+    // val event5 = "evt005 1700000004000 payments charge.failed amount=150"
+    // val event6 = "evt006 1700000004000 payments charge.failed amount=250"
 
-    val pipeline = EventPipeline()
-    val eventConsumer1 = SimpleEventConsumer()
-    pipeline.subscribe("payments", eventConsumer1)
-    pipeline.publish(event1)
-    pipeline.publish(event2)
-    pipeline.publish(event3)
-    pipeline.publish(event4)
-    pipeline.publish(event5)
-    println("pipeline.getEvents(\"payments\")")
-    pipeline.getEvents("payments").forEach { println(it.formattedMessage()) }
-    println("pipeline.getEvent(\"evt001\")")
-    println(pipeline.getEvent("evt001")?.formattedMessage())
-    println("pipeline.publishBatch(all duplicates)")
-    println(pipeline.publishBatch(listOf(event1, event2, event3, event4, event5)))
-    println("pipeline.publishBatch(all invalid)")
-    println(pipeline.publishBatch(listOf("not valid", "evt005 1700000004000", "evt005 string payments charge.failed amount=150")))
-    println("pipeline.publishBatch(mix)")
-    println(pipeline.publishBatch(listOf(event6, event1, "evt005 string payments charge.failed amount=150")))
-    println("pipeline.getEvents(\"payments\")")
-    pipeline.getEvents("payments").forEach { println(it.formattedMessage()) }
-    println("pipeline.replay(\"payments\", 1700000004000)")
-    pipeline.replay("payments", 1700000004000).forEach { println(it.formattedMessage()) }
-    println("pipeline.replayTo(\"payments\", 1700000004000, eventConsumer1)")
-    pipeline.replayTo("payments", 1700000004000, eventConsumer1)
+    // val pipeline = EventPipeline()
+    // val eventConsumer1 = SimpleEventConsumer()
+    // pipeline.subscribe("payments", eventConsumer1)
+    // pipeline.publish(event1)
+    // pipeline.publish(event2)
+    // pipeline.publish(event3)
+    // pipeline.publish(event4)
+    // pipeline.publish(event5)
+    // println("pipeline.getEvents(\"payments\")")
+    // pipeline.getEvents("payments").forEach { println(it.formattedMessage()) }
+    // println("pipeline.getEvent(\"evt001\")")
+    // println(pipeline.getEvent("evt001")?.formattedMessage())
+    // println("pipeline.publishBatch(all duplicates)")
+    // println(pipeline.publishBatch(listOf(event1, event2, event3, event4, event5)))
+    // println("pipeline.publishBatch(all invalid)")
+    // println(pipeline.publishBatch(listOf("not valid", "evt005 1700000004000", "evt005 string payments charge.failed amount=150")))
+    // println("pipeline.publishBatch(mix)")
+    // println(pipeline.publishBatch(listOf(event6, event1, "evt005 string payments charge.failed amount=150")))
+    // println("pipeline.getEvents(\"payments\")")
+    // pipeline.getEvents("payments").forEach { println(it.formattedMessage()) }
+    // println("pipeline.replay(\"payments\", 1700000004000)")
+    // pipeline.replay("payments", 1700000004000).forEach { println(it.formattedMessage()) }
+    // println("pipeline.replayTo(\"payments\", 1700000004000, eventConsumer1)")
+    // pipeline.replayTo("payments", 1700000004000, eventConsumer1)
 }

@@ -34,7 +34,7 @@ import java.util.PriorityQueue
 
 fun buildOrder(n: Int, dependencies: List<List<Int>>): List<Int> {
     // TODO: Kahn's algorithm with a min-heap for lexicographically smallest order
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun main() {
