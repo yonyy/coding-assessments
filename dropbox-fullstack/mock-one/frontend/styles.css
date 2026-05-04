@@ -1,0 +1,192 @@
+/* ── Reset & base ────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --color-primary:  #0061FF;
+  --color-surface:  #FFFFFF;
+  --color-bg:       #F7F7F7;
+  --color-border:   #E0E0E0;
+  --color-text:     #1E1919;
+  --color-muted:    #637282;
+  --radius-sm:      4px;
+  --radius-md:      8px;
+  --shadow-sm:      0 1px 3px rgba(0, 0, 0, .08);
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+}
+
+/* ── Topbar ──────────────────────────────────────────────────────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  height: 56px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+.topbar__logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+.topbar__subtitle {
+  color: var(--color-muted);
+  font-size: .875rem;
+}
+
+/* ── Layout ──────────────────────────────────────────────────────── */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+/* ── Controls ────────────────────────────────────────────────────── */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.controls__search {
+  flex: 1 1 200px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  outline: none;
+}
+.controls__search:focus {
+  border-color: var(--color-primary);
+}
+.controls__select {
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  background: var(--color-surface);
+  outline: none;
+  cursor: pointer;
+}
+.controls__sort {
+  display: flex;
+  gap: 4px;
+}
+.sort-btn {
+  padding: 7px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+}
+.sort-btn.active {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+
+/* ── Status line ─────────────────────────────────────────────────── */
+.status-line {
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+  margin-bottom: 12px;
+  min-height: 1.2em;
+}
+
+/* ── File list ───────────────────────────────────────────────────── */
+.file-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* TODO: style .file-row — use flexbox, icon+name on the left, meta on the right */
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.15s;
+}
+.file-row:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+}
+.file-row__ext {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  color: var(--color-muted);
+  min-width: 40px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.file-row__name {
+  flex: 1;
+  font-size: 0.9375rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.file-row__meta {
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+  text-align: right;
+  flex-shrink: 0;
+  line-height: 1.4;
+}
+
+/* ── Empty state ─────────────────────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 64px 16px;
+  color: var(--color-muted);
+}
+.empty-state p {
+  margin-bottom: 16px;
+  font-size: 1rem;
+}
+.btn-secondary {
+  padding: 8px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background: var(--color-bg);
+}
+
+/* ── Loading skeleton ────────────────────────────────────────────── */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.skeleton-row {
+  height: 52px;
+  background: linear-gradient(90deg, #ececec 25%, #f5f5f5 50%, #ececec 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+  border-radius: var(--radius-md);
+}
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}

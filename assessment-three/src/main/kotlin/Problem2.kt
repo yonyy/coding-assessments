@@ -24,17 +24,17 @@ class TextEditor {
 
     fun insert(text: String) {
         // TODO: push current document onto history, then append text
-        TODO()
+        TODO("Not yet implemented")
     }
 
     fun delete(k: Int) {
         // TODO: push current document onto history, then drop last k chars
-        TODO()
+        TODO("Not yet implemented")
     }
 
     fun undo() {
         // TODO: pop from history and restore document (no-op if history is empty)
-        TODO()
+        TODO("Not yet implemented")
     }
 
     fun getText(): String = document

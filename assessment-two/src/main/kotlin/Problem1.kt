@@ -19,7 +19,7 @@
 
 fun topKTips(tips: List<Double>, k: Int): List<Double> {
     // TODO: sort descending, take at most k elements
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun main() {

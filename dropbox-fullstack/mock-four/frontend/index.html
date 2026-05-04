@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dropbox — Activity Feed</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <span class="topbar__logo">Dropbox</span>
+    <span class="topbar__subtitle">Activity Feed</span>
+    <!-- Simulate button — lets you add events during the session -->
+    <button id="simulate-btn" class="btn-simulate">+ Simulate events</button>
+  </header>
+
+  <main class="container">
+
+    <!-- "N new events" banner — hidden until new events arrive via polling.
+         Clicking it scrolls to the top and reveals the events.
+         Do NOT auto-scroll — the user may be reading older events. -->
+    <div id="new-events-banner" class="new-events-banner" hidden>
+      <span id="new-events-count"></span> new events — <button id="show-new-btn">Show</button>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar" role="group" aria-label="Filter by activity type">
+      <button class="filter-btn active" data-type="">All</button>
+      <button class="filter-btn" data-type="upload">Uploads</button>
+      <button class="filter-btn" data-type="download">Downloads</button>
+      <button class="filter-btn" data-type="edit">Edits</button>
+      <button class="filter-btn" data-type="share">Shares</button>
+      <button class="filter-btn" data-type="delete">Deletions</button>
+    </div>
+
+    <!-- Loading state (initial fetch only) -->
+    <div id="loading-state" class="loading-state" hidden>
+      <div class="skeleton-row"></div>
+      <div class="skeleton-row"></div>
+      <div class="skeleton-row"></div>
+      <div class="skeleton-row"></div>
+    </div>
+
+    <!-- Activity feed
+         TODO: prepend new event rows with CSS slide-in animation.
+         Each .event-row needs:
+           - type icon/emoji (.event-row__icon)
+           - .event-row__body: file name (.event-row__file), action description (.event-row__action)
+           - .event-row__meta: user, relative timestamp ("2 min ago")
+         Add data-type attribute for client-side filter toggling. -->
+    <ul id="event-feed" class="event-feed" aria-label="Activity feed" aria-live="polite"></ul>
+
+    <!-- Empty state -->
+    <div id="empty-state" class="empty-state" hidden>
+      <p>No activity yet.</p>
+    </div>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

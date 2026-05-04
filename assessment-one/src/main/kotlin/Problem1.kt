@@ -25,16 +25,9 @@ data class Item(val name: String, val stock: Int, val threshold: Int)
 fun restockPriority(items: List<Item>): List<String> {
     // TODO: filter items where stock < threshold,
     // then sort by (stock - threshold) asc, break ties alphabetically
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun main() {
-    val items = listOf(
-        Item("apple",  5,  10),
-        Item("banana", 2,  4),
-        Item("mango",  8,  8),
-        Item("grape",  1,  9)
-    )
-    println(restockPriority(items))
-    // Expected: [grape, apple, banana]
+    // println(restockPriority(listOf(Item("apple", 5, 10), Item("banana", 2, 4), Item("mango", 8, 8), Item("grape", 1, 9))))  // Expected: [grape, apple, banana]
 }

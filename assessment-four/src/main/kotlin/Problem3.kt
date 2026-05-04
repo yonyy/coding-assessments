@@ -27,7 +27,7 @@
 
 fun maxFreshness(scores: IntArray, w: Int): List<Int> {
     // TODO: monotonic decreasing deque — stores indices
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun main() {

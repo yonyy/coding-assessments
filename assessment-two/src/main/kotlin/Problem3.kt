@@ -33,7 +33,7 @@ data class Order(val id: Int, val arrivalTime: Int, val processingTime: Int)
 fun processOrders(orders: List<Order>): List<Int> {
     // TODO: simulate shortest-job-first scheduling
     // Sort by arrival. Use a min-heap on (processingTime, id) for available orders.
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun main() {

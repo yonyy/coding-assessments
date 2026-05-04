@@ -22,7 +22,7 @@
 fun longestBatch(aisles: IntArray, k: Int): Int {
     // TODO: sliding window with a frequency map —
     // expand right pointer, shrink left when distinct count > k
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun main() {

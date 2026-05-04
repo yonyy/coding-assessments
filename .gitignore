@@ -4,6 +4,8 @@ LEARNINGS.html
 # IDE
 .idea/
 
+.DS_Store
+
 # Gradle
 .gradle/
 build/

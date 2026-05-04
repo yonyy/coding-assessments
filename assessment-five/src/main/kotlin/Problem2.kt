@@ -28,20 +28,19 @@
 
 fun encode(route: String): String {
     // TODO: run-length encode — omit count when run length is 1
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun decode(encoded: String): String {
-    // TODO: parse char optionally followed by digits, expand
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun main() {
-    println(encode("NNNEESSWWWWN"))  // Expected: N3E2S2W4N
-    println(encode("NSEW"))          // Expected: NSEW
-    println(encode("SSSSSS"))        // Expected: S6
+    // println(encode("NNNEESSWWWWN"))  // Expected: N3E2S2W4N
+    // println(encode("NSEW"))          // Expected: NSEW
+    // println(encode("SSSSSS"))        // Expected: S6
 
-    println(decode("N3E2S2W4N"))     // Expected: NNNEESSWWWWN
-    println(decode("NSEW"))          // Expected: NSEW
-    println(decode("S6"))            // Expected: SSSSSS
+    // println(decode("N3E2S2W4N"))     // Expected: NNNEESSWWWWN
+    // println(decode("NSEW"))          // Expected: NSEW
+    // println(decode("S6"))            // Expected: SSSSSS
 }

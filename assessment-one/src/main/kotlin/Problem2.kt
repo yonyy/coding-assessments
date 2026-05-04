@@ -22,28 +22,13 @@
 fun maxDeliveries(deliveries: List<IntArray>): Int {
     // TODO: classic interval scheduling —
     // sort by end time, greedily pick the earliest-ending non-overlapping delivery
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun main() {
-    println(maxDeliveries(listOf(
-        intArrayOf(1, 3), intArrayOf(2, 4), intArrayOf(3, 5),
-        intArrayOf(6, 8), intArrayOf(7, 9), intArrayOf(8, 10)
-    ))) // Expected: 3
-
-    println(maxDeliveries(listOf(
-        intArrayOf(1, 10), intArrayOf(2, 3), intArrayOf(4, 5)
-    ))) // Expected: 2
-
-    println(maxDeliveries(listOf(
-        intArrayOf(1, 2), intArrayOf(3, 4), intArrayOf(5, 6)
-    ))) // Expected: 3
-
-    println(maxDeliveries(listOf(
-        intArrayOf(1, 5), intArrayOf(2, 3), intArrayOf(4, 6)
-    ))) // Expected: 2
-
-    println(maxDeliveries(listOf(
-        intArrayOf(5, 5)
-    ))) // Expected: 1
+    // println(maxDeliveries(listOf(intArrayOf(1, 3), intArrayOf(2, 4), intArrayOf(3, 5), intArrayOf(6, 8), intArrayOf(7, 9), intArrayOf(8, 10))))  // Expected: 4
+    // println(maxDeliveries(listOf(intArrayOf(1, 10), intArrayOf(2, 3), intArrayOf(4, 5))))  // Expected: 2
+    // println(maxDeliveries(listOf(intArrayOf(1, 2), intArrayOf(3, 4), intArrayOf(5, 6))))  // Expected: 3
+    // println(maxDeliveries(listOf(intArrayOf(1, 5), intArrayOf(2, 3), intArrayOf(4, 6))))  // Expected: 2
+    // println(maxDeliveries(listOf(intArrayOf(5, 5))))  // Expected: 1
 }

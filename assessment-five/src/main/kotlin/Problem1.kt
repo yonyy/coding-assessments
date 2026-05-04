@@ -25,17 +25,16 @@
  */
 
 fun sortByFrequency(cart: List<String>): List<String> {
-    // TODO: count frequencies, sort by count desc then name asc
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun main() {
-    println(sortByFrequency(listOf("apple", "banana", "apple", "orange", "banana", "apple")))
+    // println(sortByFrequency(listOf("apple", "banana", "apple", "orange", "banana", "apple")))
     // Expected: [apple, banana, orange]
 
-    println(sortByFrequency(listOf("milk", "eggs", "milk", "bread", "eggs")))
+    // println(sortByFrequency(listOf("milk", "eggs", "milk", "bread", "eggs")))
     // Expected: [eggs, milk, bread]
 
-    println(sortByFrequency(listOf("a")))
+    // println(sortByFrequency(listOf("a")))
     // Expected: [a]
 }

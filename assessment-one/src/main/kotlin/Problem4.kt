@@ -35,30 +35,16 @@ fun minTravelTime(
     dst: Int,
     minReliability: Double
 ): Int {
-    // Step 1: Build adjacency list
-    val graph = Array(n) { mutableListOf<Edge>() }
-    for (e in edges) {
-        val u = e[0] as Int; val v = e[1] as Int
-        val t = e[2] as Int; val r = e[3] as Double
-        graph[u].add(Edge(v, t, r))
-    }
-
-    // Step 2: Modified Dijkstra
-    // TODO: min-heap on time; track best (time, reliability) per node
+    // TODO: build adjacency list, then run modified Dijkstra
+    // min-heap on time; track best (time, reliability) per node
     // Accept dst only if reliability >= minReliability
-    TODO()
+    TODO("Not yet implemented")
 }
 
 fun main() {
-    val edges = listOf(
-        listOf(0, 1, 4,  0.90),
-        listOf(0, 2, 2,  0.80),
-        listOf(1, 3, 3,  0.95),
-        listOf(2, 3, 5,  0.70),
-        listOf(0, 3, 10, 1.00)
-    )
-    println(minTravelTime(4, edges, 0, 3, 0.75))  // Expected: 7
-    println(minTravelTime(4, edges, 0, 3, 0.99))  // Expected: 10
-    println(minTravelTime(4, listOf(listOf(0, 1, 5, 0.9)), 0, 3, 0.5)) // Expected: -1
-    println(minTravelTime(2, listOf(listOf(0, 1, 3, 0.80)), 0, 1, 0.75)) // Expected: 3
+    // val edges = listOf(listOf(0, 1, 4, 0.90), listOf(0, 2, 2, 0.80), listOf(1, 3, 3, 0.95), listOf(2, 3, 5, 0.70), listOf(0, 3, 10, 1.00))
+    // println(minTravelTime(4, edges, 0, 3, 0.75))  // Expected: 7
+    // println(minTravelTime(4, edges, 0, 3, 0.99))  // Expected: 10
+    // println(minTravelTime(4, listOf(listOf(0, 1, 5, 0.9)), 0, 3, 0.5))  // Expected: -1
+    // println(minTravelTime(2, listOf(listOf(0, 1, 3, 0.80)), 0, 1, 0.75))  // Expected: 3
 }
